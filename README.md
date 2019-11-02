@@ -32,9 +32,9 @@ provider:
 ```
 
 ### domain 
-dnsx <action> <domain> <type> <value>
+dnsx <action> <domain> <sub-domain> [<record> <value>]
 
-action: set,get,update,delete
-type: a,txt,cname
+action: add,get,update,delete
+record: a,txt,cname
 value: value
 
