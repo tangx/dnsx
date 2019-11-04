@@ -5,6 +5,8 @@ import (
 	"os"
 	"strings"
 
+	"github.com/tangx/dnsx/backend/aliyun"
+
 	"github.com/tangx/dnsx/backend/qcloud"
 	"github.com/tangx/dnsx/config"
 
@@ -36,7 +38,7 @@ func Add(args []string) {
 		os.Exit(1)
 	}
 
-	providor, _, _ := config.LoadDomainConfig(args[0])
+	providor, akid, akey := config.LoadDomainConfig(args[0])
 
 	switch strings.ToLower(providor) {
 	case "qcloud":
@@ -44,6 +46,18 @@ func Add(args []string) {
 			var qcns qcloud.QcloudCNS
 			qcns.Add(args[0], args[1], args[2], args[3])
 		}
+	case "aliyun":
+		{
+
+			alidns := aliyun.Alidns{
+				AKID:   akid,
+				AKEY:   akey,
+				Domain: args[0],
+			}
+			alidns.Add(args[1], args[2], args[3])
+			//alidns.add
+		}
+
 	default:
 		{
 			fmt.Printf("DNS提供商( %s ) 不在支持列表", providor)
