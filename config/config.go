@@ -55,6 +55,15 @@ func LoadDomainConfig(domain string) (provider, akid, akey string) {
 
 	config := LoadConfig()
 
+	// 可以通过 ok 判断确认某个键是否在 list(slice) 或 map 中。
+	//   如果存在，则返回 value, true
+	//   如果不存在， 则返回  0值, false
+	//
+	// 注意1: struct 不能使用 ok 判断，
+	// 注意2: 指针值使用键值的时候，需要加圆括号
+	//    https://stackoverflow.com/questions/25290956/go-update-slice-iterating-error-does-not-support-indexing
+	//    https://flaviocopes.com/golang-does-not-support-indexing/
+	//    invalid operation: members[0] (type *Members does not support indexing)
 	if domainConfig, ok := config.Domains[domain]; ok {
 		return domainConfig.Provider, domainConfig.AKID, domainConfig.AKEY
 	}
