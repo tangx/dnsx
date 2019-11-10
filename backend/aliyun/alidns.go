@@ -4,7 +4,7 @@ import (
 	"strconv"
 
 	"github.com/sirupsen/logrus"
-	alidns "github.com/tangx/alidns-sdk"
+	"github.com/tangx/alidns-sdk"
 )
 
 // AliyunDNS is cns
