@@ -19,13 +19,15 @@ func (ali AliyunDNS) InitClient() *alidns.Client {
 	return alidns.New(ali.AKID, ali.AKEY)
 }
 
-// add
-func (ali AliyunDNS) add(subDomain string, recordType string, recordValue string) (recordID int) {
+// Add domain record
+func (ali AliyunDNS) Add(subDomain string, recordType string, recordValue string) (recordID int) {
 	cli := ali.InitClient()
 	resp, errResp, err := cli.AddDomainRecord(ali.Domain, subDomain, recordType, recordValue, nil)
 	if err != nil {
 		logrus.Error(errResp.Message)
 	}
 	rrID, _ := strconv.Atoi(resp.RecordId)
+
+	logrus.Infof("Added: %s.%s (%s %s)", subDomain, ali.Domain, recordType, recordValue)
 	return rrID
 }

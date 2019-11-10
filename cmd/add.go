@@ -49,13 +49,12 @@ func Add(args []string) {
 	case "aliyun":
 		{
 
-			alidns := aliyun.Alidns{
+			alidns := aliyun.AliyunDNS{
 				AKID:   akid,
 				AKEY:   akey,
 				Domain: args[0],
 			}
 			alidns.Add(args[1], args[2], args[3])
-			//alidns.add
 		}
 
 	default:

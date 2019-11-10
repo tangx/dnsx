@@ -10,15 +10,15 @@ import (
 // https://help.aliyun.com/document_detail/29776.html
 func TestDNS_InitClient(t *testing.T) {
 
-	_, akid, akey := config.LoadDomainConfig("rockontrol.com")
+	_, akid, akey := config.LoadDomainConfig("example.org")
 
 	ali := AliyunDNS{
 		AKID:   akid,
 		AKEY:   akey,
-		Domain: "rockontrol.com",
+		Domain: "example.org",
 	}
 
-	rrID := ali.add("tagnxin233333", "A", "172.31.1.31")
+	rrID := ali.Add("tagnxin213", "A", "172.31.1.31")
 	fmt.Println(rrID)
 
 }
