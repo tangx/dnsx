@@ -1,6 +1,7 @@
 package aliyun
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/tangx/dnsx/config"
@@ -9,13 +10,15 @@ import (
 // https://help.aliyun.com/document_detail/29776.html
 func TestDNS_InitClient(t *testing.T) {
 
-	_, akid, akey := config.LoadDomainConfig("example.org")
+	_, akid, akey := config.LoadDomainConfig("rockontrol.com")
 
-	ali := Alidns{
+	ali := AliyunDNS{
 		AKID:   akid,
 		AKEY:   akey,
-		Domain: "example.org",
+		Domain: "rockontrol.com",
 	}
 
-	ali.Add("tagnxin2333", "A", "172.31.1.31")
+	rrID := ali.add("tagnxin233333", "A", "172.31.1.31")
+	fmt.Println(rrID)
+
 }
