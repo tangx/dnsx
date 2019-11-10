@@ -24,7 +24,7 @@ func (ali AliyunDNS) Add(subDomain string, recordType string, recordValue string
 	cli := ali.InitClient()
 	resp, errResp, err := cli.AddDomainRecord(ali.Domain, subDomain, recordType, recordValue, nil)
 	if err != nil {
-		logrus.Error(errResp.Message)
+		logrus.Fatal(errResp.Message)
 	}
 	rrID, _ := strconv.Atoi(resp.RecordId)
 
