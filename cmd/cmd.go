@@ -1,47 +1,71 @@
 package cmd
 
 import (
-	"encoding/json"
-	"errors"
-	"io/ioutil"
+	"flag"
+	"log"
+	"strings"
 
-	"github.com/tangx/dnsx/utils"
+	"github.com/tangx/dnsx/backend/aliyun"
+	"github.com/tangx/dnsx/backend/qcloud"
 )
-
-type Dnsx struct {
-	Profile map[string]DnsxConfig `json:"profile,omitempty"`
-}
-
-type DnsxConfig struct {
-	AKEY     string   `json:"AKEY,omitempty" example:"KEYxxxxx"`
-	AKID     string   `json:"AKID,omitempty" example:"IDxxxxxxx"`
-	Domains  []string `json:"Domains,omitempty" example:"example.org,example.com"`
-	Provider string   `json:"Provider,omitempty" example:"aliyun"`
-}
 
 // Client for dnsx
 type Client struct {
-	Config string
+	Config  string
+	Profile string
 }
 
-func (c Client) LoadConfig(profile string) DnsxConfig {
-	var dx Dnsx
-	if !utils.FileExists(c.Config) {
-		panic(errors.New("config is not exists"))
-	}
-	body, err := ioutil.ReadFile(c.Config)
-	if err != nil {
-		panic(err)
+// Dnsx actions
+type Dnsx interface {
+	Add(domain, rr, rrType, rrValue string) string
+}
+
+var profile = flag.String("profile", "default", "操作的 profile 的名称")
+var conf = flag.String("conf", "~/.dnsx/config.json", "配置文件")
+
+// Main to run
+func Main() {
+	flag.Parse()
+	c := Client{
+		Config:  *conf,
+		Profile: *profile,
 	}
 
-	err = json.Unmarshal(body, &dx)
-	if err != nil {
-		panic(err)
+	var dnsx Dnsx
+	cfg := c.LoadConfig()
+
+	switch cfg.Provider {
+	case "aliyun":
+		{
+			dnsx = aliyun.AliyunDNS{
+				AKID: cfg.AKID,
+				AKEY: cfg.AKEY,
+			}
+		}
+	case "qcloud":
+		{
+			dnsx = qcloud.QcloudCNS{
+				AKID: cfg.AKID,
+				AKEY: cfg.AKEY,
+			}
+		}
+	default:
+		{
+			log.Fatal("没有或不支持的 Provider")
+		}
 	}
 
-	dnsConfig, ok := dx.Profile[profile]
-	if ok {
-		return dnsConfig
+	args := flag.Args()
+	if len(args) < 1 {
+
+		usage := `-profile default set example.com www a 1.2.3.4`
+		log.Fatalln(usage)
 	}
-	return DnsxConfig{}
+
+	switch strings.ToLower(args[0]) {
+	case "add":
+		{
+			dnsx.Add(args[1], args[2], args[3], args[4])
+		}
+	}
 }

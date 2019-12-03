@@ -10,6 +10,6 @@ func Test_LoadConfig(t *testing.T) {
 		Config: "/Users/tangxin/.dnsx/config.json",
 	}
 
-	cfg := c.LoadConfig("default")
+	cfg := c.LoadConfig()
 	fmt.Println(cfg.Provider)
 }
