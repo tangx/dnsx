@@ -1,6 +1,9 @@
 package utils
 
-import "os"
+import (
+	"os"
+	"os/user"
+)
 
 func FileExists(path string) bool {
 	_, err := os.Stat(path)
@@ -11,4 +14,17 @@ func FileExists(path string) bool {
 		return false
 	}
 	return true
+}
+
+func IsError(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
+
+func UserHome() string {
+	u, err := user.Current()
+	IsError(err)
+
+	return u.HomeDir
 }
