@@ -22,8 +22,6 @@ func init() {
 	// rootCmd.AddCommand(rootCmd)
 	rootCmd.PersistentFlags().StringVarP(&profile, "profile", "p", "default", "具体 profile")
 	rootCmd.PersistentFlags().StringVarP(&conf, "conf", "c", "~/.dnsx/config.json", "配置文件路径")
-
-	InitConfig()
 }
 
 func Execute() {
