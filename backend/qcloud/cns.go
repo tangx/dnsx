@@ -3,6 +3,7 @@ package qcloud
 import (
 	cns "github.com/go-http/qcloud-cns"
 	"github.com/sirupsen/logrus"
+	"strings"
 )
 
 // QcloudCNS is cns
@@ -22,7 +23,7 @@ func (qcns QcloudCNS) Add(domain, rr, rrType, rrValue string) string {
 
 	record := cns.Record{
 		Name:  rr,
-		Type:  rrType,
+		Type:  strings.ToUpper(rrType),
 		Value: rrValue,
 	}
 
