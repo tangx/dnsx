@@ -3,8 +3,8 @@
 多后台的 dns 解析配置命令行
 
 + [x] 使用 `interface` 方法实现多 `backend` 接入
-+ [ ] 使用 `cobra` 创建子命令
-  + [ ] `add`
++ [x] 使用 `cobra` 创建子命令
+  + [x] `add`
   + [ ] `delete`
   + [ ] `update`
 + [ ] 使用 `cobra` 实现 `config.json` 的配置

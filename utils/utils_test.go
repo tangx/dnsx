@@ -1,7 +1,8 @@
 package utils
 
 import (
-	"fmt"
+	"log"
+	"os"
 	"testing"
 )
 
@@ -11,5 +12,12 @@ func TestFileExists(t *testing.T) {
 }
 
 func TestUserHome(t *testing.T) {
-	fmt.Println(UserHome())
+	// 1
+	log.Println(UserHome())
+
+	// 2
+	log.Println(os.Getenv("HOME"))
+	// 3
+	home, _ := os.UserHomeDir()
+	log.Println(home)
 }

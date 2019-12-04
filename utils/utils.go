@@ -25,6 +25,5 @@ func IsError(err error) {
 func UserHome() string {
 	u, err := user.Current()
 	IsError(err)
-
 	return u.HomeDir
 }

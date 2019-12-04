@@ -1,12 +1,17 @@
 package cmd
 
 import (
-	"flag"
 	"log"
-	"strings"
 
 	"github.com/tangx/dnsx/backend/aliyun"
 	"github.com/tangx/dnsx/backend/qcloud"
+)
+
+var (
+	conf    string
+	profile string
+
+	dnsx Dnsx
 )
 
 // Client for dnsx
@@ -20,18 +25,13 @@ type Dnsx interface {
 	Add(domain, rr, rrType, rrValue string) string
 }
 
-var profile = flag.String("profile", "default", "操作的 profile 的名称")
-var conf = flag.String("conf", "~/.dnsx/config.json", "配置文件")
-
-// Main to run
-func Main() {
-	flag.Parse()
+// InitConfig to run
+func InitConfig() {
 	c := Client{
-		Config:  *conf,
-		Profile: *profile,
+		Config:  conf,
+		Profile: profile,
 	}
 
-	var dnsx Dnsx
 	cfg := c.LoadConfig()
 
 	switch cfg.Provider {
@@ -52,20 +52,6 @@ func Main() {
 	default:
 		{
 			log.Fatal("没有或不支持的 Provider")
-		}
-	}
-
-	args := flag.Args()
-	if len(args) < 1 {
-
-		usage := `-profile default set example.com www a 1.2.3.4`
-		log.Fatalln(usage)
-	}
-
-	switch strings.ToLower(args[0]) {
-	case "add":
-		{
-			dnsx.Add(args[1], args[2], args[3], args[4])
 		}
 	}
 }
