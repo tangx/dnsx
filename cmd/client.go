@@ -14,10 +14,10 @@ import (
 )
 
 type DNSxConfig struct {
-	Profile map[string]DnsxConfigItem `json:"profile,omitempty"`
+	Profile map[string]DNSxConfigItem `json:"profile,omitempty"`
 }
 
-type DnsxConfigItem struct {
+type DNSxConfigItem struct {
 	AKEY     string   `json:"AKEY,omitempty" example:"KEYxxxxx"`
 	AKID     string   `json:"AKID,omitempty" example:"IDxxxxxxx"`
 	Domains  []string `json:"Domains,omitempty" example:"example.org,example.com"`
@@ -36,7 +36,7 @@ type Dnsx interface {
 }
 
 // LoadConfig load config
-func (c Client) LoadConfig() DnsxConfigItem {
+func (c Client) LoadConfig() DNSxConfigItem {
 
 	var dx DNSxConfig
 	if !utils.FileExists(c.Config) {
@@ -56,7 +56,7 @@ func (c Client) LoadConfig() DnsxConfigItem {
 	if ok {
 		return dnsConfig
 	}
-	return DnsxConfigItem{}
+	return DNSxConfigItem{}
 }
 
 var dnsx Dnsx
@@ -100,7 +100,7 @@ func Execute() {
 	}
 }
 
-func (dnsx DNSxConfig) String() string {
+func (dnsx DNSxConfig) Marshal() string {
 	b, _ := json.MarshalIndent(dnsx, "", "  ")
 	return string(b)
 }
@@ -115,13 +115,15 @@ func (dnsx DNSxConfig) DeleteProfile(profile string) {
 
 // DumpConfig will store DNSxConfig to cfgPath
 func (dnsx DNSxConfig) DumpConfig() {
-	f, err := os.OpenFile(cfgPath, os.O_CREATE|os.O_RDWR, 0644)
+	// f, err := os.OpenFile(cfgPath, os.O_CREATE|os.O_RDWR, 0644)
+	f, err := os.OpenFile(cfgPath, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0644)
+
 	if err != nil {
 		panic(err)
 	}
 	defer f.Close()
 
-	s := dnsx.String()
+	s := dnsx.Marshal()
 	f.WriteString(s)
 }
 
@@ -139,5 +141,5 @@ func LoadConfig() (dnsx DNSxConfig) {
 		panic(err)
 	}
 
-	return dnsx
+	return
 }
