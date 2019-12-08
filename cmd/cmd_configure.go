@@ -101,6 +101,8 @@ func AddProfile() {
 	}
 
 	dnsx := LoadConfig()
+	fmt.Println(dnsx.Marshal())
+
 	dnsx.Profile[cfgProfile] = item
 
 	dnsx.DumpConfig()

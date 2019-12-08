@@ -14,7 +14,7 @@ import (
 )
 
 type DNSxConfig struct {
-	Profile map[string]DNSxConfigItem `json:"profile,omitempty"`
+	Profile map[string]DNSxConfigItem `json:"profile"`
 }
 
 type DNSxConfigItem struct {
@@ -131,6 +131,9 @@ func (dnsx DNSxConfig) DumpConfig() {
 func LoadConfig() (dnsx DNSxConfig) {
 	ParseFlags()
 
+	if !utils.FileExists(cfgPath) {
+		dnsx.New(cfgPath)
+	}
 	cfgByte, err := ioutil.ReadFile(cfgPath)
 	if err != nil {
 		panic(err)
@@ -138,8 +141,13 @@ func LoadConfig() (dnsx DNSxConfig) {
 
 	err = json.Unmarshal(cfgByte, &dnsx)
 	if err != nil {
-		panic(err)
+		return DNSxConfig{map[string]DNSxConfigItem{}}
 	}
 
 	return
+}
+
+// New a dnsx config
+func (dnsx DNSxConfig) New(path string) {
+	dnsx.DumpConfig()
 }
