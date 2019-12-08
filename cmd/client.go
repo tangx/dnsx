@@ -30,8 +30,8 @@ type Client struct {
 	Profile string
 }
 
-// Dnsx actions
-type Dnsx interface {
+// iDNSx interface
+type iDNSx interface {
 	Add(domain, rr, rrType, rrValue string) string
 }
 
@@ -59,18 +59,8 @@ func (c Client) LoadConfig() DNSxConfigItem {
 	return DNSxConfigItem{}
 }
 
-var dnsx Dnsx
-
-// InitConfig to run
-func InitConfig() {
-	ParseFlags()
-
-	c := Client{
-		Config:  cfgPath,
-		Profile: cfgProfile,
-	}
-
-	cfg := c.LoadConfig()
+func InitConfig() (dnsx iDNSx) {
+	cfg := LoadConfig().Profile[cfgProfile]
 
 	switch cfg.Provider {
 	case "aliyun":
@@ -80,6 +70,7 @@ func InitConfig() {
 	default:
 		log.Fatal("没有或不支持的 Provider")
 	}
+	return
 }
 
 // ParseFlags to transfer flags

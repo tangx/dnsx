@@ -12,7 +12,6 @@ var addCmd = &cobra.Command{
 	Use:   "add",
 	Short: "添加域名解析记录",
 	Run: func(cmd *cobra.Command, args []string) {
-		InitConfig()
 		addRecord(args)
 	},
 }
@@ -22,7 +21,7 @@ func init() {
 }
 
 func addRecord(args []string) {
-
+	dnsx := InitConfig()
 	// fmt.Println(args)
 	if len(args) != 4 {
 		addHelp()
