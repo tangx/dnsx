@@ -7,10 +7,10 @@
   + [x] `add`
   + [ ] `delete`
   + [ ] `update`
-+ [ ] 使用 `cobra` 实现 `config.json` 的配置
-  + [ ] 增加
-  + [ ] 更新
-  + [ ] 优化 `LoadConfig()` 加载位置
++ [x] 使用 `cobra` 实现 `config.json` 的配置
+  + [x] 增加
+  + [x] 更新
+  + [x] 优化 `LoadConfig()` 加载位置
 
 + [ ] 完成 `auto-complete` for zsh: 支持子命令补全， `config.json` 中的域名列表补全
 
