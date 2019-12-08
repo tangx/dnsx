@@ -42,7 +42,7 @@ func init() {
 }
 
 var (
-	providers = []string{"qcloud", "aliyun", "dnspod"}
+	providers = []string{"qcloud", "aliyun"}
 )
 
 // QsProvider to select a dns provider
