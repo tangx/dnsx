@@ -1,0 +1,6 @@
+github.com/go-http/qcloud-cns v0.0.0-20180413090041-c5f8ec5d0c89 h1:dHA5B4M8LOWFBVlJvckqtvxi1tF/PSu7qsOyV1O3uhU=
+github.com/go-http/qcloud-cns v0.0.0-20180413090041-c5f8ec5d0c89/go.mod h1:H0hN8614E90zqx2cabebfxTJViox8GqF6kmOycW5xOQ=
+github.com/google/uuid v1.1.1 h1:Gkbcsh/GbpXz7lPftLA3P6TYMwjCLYm83jiFQZF/3gY=
+github.com/google/uuid v1.1.1/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
+github.com/tangx/alidns-sdk v1.0.9 h1:Xdjav7i9SwgLSC2KTXY+bqXkHdgYE7/B+eLVbntxhZY=
+github.com/tangx/alidns-sdk v1.0.9/go.mod h1:z+XzAca9M8tJkwdcIzT2UFVderrbYRf5CnmNRh6HG4Y=

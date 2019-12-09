@@ -1,0 +1,23 @@
+{
+    "Current": "aliyun",
+    "Profile": {
+        "aliyun": {
+            "Provider": "aliyun",
+            "AKID": "AKIDxxxxxxx",
+            "AKEY": "AKEYxxxxxxx",
+            "Domain": [
+                "example.org",
+                "example.com"
+            ]
+        },
+        "qcloud": {
+            "Provider": "aliyun",
+            "AKID": "AKIDxxxxxxx",
+            "AKEY": "AKEYxxxxxxx",
+            "Domain": [
+                "example.org",
+                "example.com"
+            ]
+        }
+    }
+}
