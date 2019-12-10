@@ -20,29 +20,31 @@ var configureCmd = &cobra.Command{
 
 var configureAddCmd = &cobra.Command{
 	Use:   "add",
-	Short: "增加 profile",
+	Short: "向 Config 中增加 profile",
 	Run: func(cmd *cobra.Command, args []string) {
 		AddProfile()
 	},
 }
+var configureDeleteCmd = &cobra.Command{
+	Use:   "rm",
+	Short: "从 Config 中删除 profile",
+	Run: func(cmd *cobra.Command, args []string) {
+		DeleteProfile()
+	},
+}
 
 var configureCurrentCmd = &cobra.Command{
-	Use:   "current",
-	Short: "增加 profile",
+	Use:   "set",
+	Short: "修改 current值， 设置默认生效的 profile",
 	Run: func(cmd *cobra.Command, args []string) {
 		SetCurrent()
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(configureCmd)
 	configureCmd.AddCommand(configureAddCmd)
 	configureCmd.AddCommand(configureCurrentCmd)
-}
-
-// ConfigureMain configure 子命令入口
-func ConfigureMain() {
-
+	configureCmd.AddCommand(configureDeleteCmd)
 }
 
 // AddProfile 增加
@@ -100,6 +102,45 @@ func AddProfile() {
 		dnsx.Dump(global.CfgFile)
 	} else {
 		logrus.Infoln("用户取消添加")
+	}
+
+}
+
+// DeleteProfile 删除
+func DeleteProfile() {
+	dnsx := global.Load()
+
+	var profiles []string
+	for k := range dnsx.Items {
+		profiles = append(profiles, k)
+	}
+
+	fmt.Println(profiles)
+
+	var profile string
+	survey.AskOne(
+		&survey.Select{
+			Message: "选择需要删除的 Profile",
+			Options: profiles,
+		},
+		&profile,
+	)
+
+	fmt.Println(profile)
+
+	confirm := false
+	survey.AskOne(
+		&survey.Confirm{Message: fmt.Sprintf("确认删除 %s ？", profile)},
+		&confirm,
+	)
+
+	if confirm {
+		dnsx.Delete(profile)
+
+		dnsx.Dump(global.CfgFile)
+		logrus.Infof("已删除 Profile(%s)", profile)
+	} else {
+		logrus.Infof("用户取消删除 Profile(%s)", profile)
 	}
 
 }

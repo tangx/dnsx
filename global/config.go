@@ -86,4 +86,7 @@ func (dnsx DNSxConfig) Marshal() (s string) {
 func (dnsx DNSxConfig) Add(profile string, item DNSxConfigItem) {}
 
 // Delete 删除 Profile
-func (dnsx DNSxConfig) Delete(profile string) {}
+func (dnsx *DNSxConfig) Delete(profile string) {
+	delete(dnsx.Items, profile)
+
+}
