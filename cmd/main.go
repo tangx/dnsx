@@ -24,8 +24,9 @@ var rootCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(configureCmd)
 	rootCmd.AddCommand(addCmd)
-	rootCmd.AddCommand(getCmd)
+	rootCmd.AddCommand(searchCmd)
 
+	// global vars
 	rootCmd.PersistentFlags().StringVarP(&global.CfgFile, "config", "c", "$HOME/.dnsx/dnsx.json", "config file")
 	rootCmd.PersistentFlags().StringVarP(&global.Profile, "profile", "p", "default", "profile")
 }

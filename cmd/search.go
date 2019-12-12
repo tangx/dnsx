@@ -10,9 +10,9 @@ import (
 	"github.com/tangx/dnsx/backend"
 )
 
-// getCmd represents the get command
-var getCmd = &cobra.Command{
-	Use:   "get",
+// searchCmd represents the get command
+var searchCmd = &cobra.Command{
+	Use:   "search",
 	Short: "查询记录信息",
 
 	Run: func(cmd *cobra.Command, args []string) {
