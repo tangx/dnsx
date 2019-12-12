@@ -4,7 +4,11 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"github.com/tangx/dnsx/backend"
+	"github.com/tangx/dnsx/backend/aliyun"
+	"github.com/tangx/dnsx/backend/qcloud"
 	"github.com/tangx/dnsx/global"
 )
 
@@ -20,6 +24,7 @@ var rootCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(configureCmd)
 	rootCmd.AddCommand(addCmd)
+	rootCmd.AddCommand(getCmd)
 
 	rootCmd.PersistentFlags().StringVarP(&global.CfgFile, "config", "c", "$HOME/.dnsx/dnsx.json", "config file")
 	rootCmd.PersistentFlags().StringVarP(&global.Profile, "profile", "p", "default", "profile")
@@ -36,4 +41,30 @@ func Execute() {
 // Client for dnsx
 type Client interface {
 	AddRecord(domain, record, rrType, Value string) (recordID string)
+	GetRecords(domain, record string) (RRs []backend.RecordItem)
+}
+
+// GetClient 根据 Provider 返回相应 DNS 客户端
+func GetClient() (iClient Client) {
+	// var iClient Client
+	dnsx := global.Load()
+	var item global.DNSxConfigItem
+
+	if global.Profile == "default" {
+		item = dnsx.Items[dnsx.Current]
+	} else {
+		item = dnsx.Items[global.Profile]
+	}
+
+	// fmt.Println(item)
+	switch item.Provider {
+	case "aliyun":
+		iClient = aliyun.Client{AKID: item.AKID, AKEY: item.AKEY}
+	case "qcloud":
+		iClient = qcloud.Client{AKID: item.AKID, AKEY: item.AKEY}
+	default:
+		logrus.Fatalf("Provider(%s) : 不支持 DNS 供应商", item.Provider)
+	}
+
+	return
 }
