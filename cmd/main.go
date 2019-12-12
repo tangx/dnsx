@@ -19,9 +19,10 @@ var rootCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(configureCmd)
+	rootCmd.AddCommand(addCmd)
 
 	rootCmd.PersistentFlags().StringVarP(&global.CfgFile, "config", "c", "$HOME/.dnsx/dnsx.json", "config file")
-	rootCmd.PersistentFlags().StringVarP(&global.Profile, "profile", "p", "defualt", "profile")
+	rootCmd.PersistentFlags().StringVarP(&global.Profile, "profile", "p", "default", "profile")
 }
 
 // Execute 执行命令
@@ -30,4 +31,9 @@ func Execute() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+}
+
+// Client for dnsx
+type Client interface {
+	AddRecord(domain, record, rrType, Value string) (recordID string)
 }

@@ -1,7 +1,12 @@
 package qcloud
 
-import cns "github.com/go-http/qcloud-cns"
-import "github.com/tangx/dnsx/utils"
+import (
+	"strconv"
+	"strings"
+
+	cns "github.com/go-http/qcloud-cns"
+	"github.com/sirupsen/logrus"
+)
 
 // Client 腾讯云 DNS
 type Client struct {
@@ -16,10 +21,13 @@ func (cli Client) AddRecord(domain, rr, rrType, rrValue string) (recordID string
 		domain,
 		cns.Record{
 			Name:  rr,
-			Type:  rrType,
+			Type:  strings.ToUpper(rrType),
 			Value: rrValue,
 		})
-	utils.PanicError(err)
 
-	return string(id)
+	if err != nil {
+		logrus.Fatalln(err)
+	}
+
+	return strconv.Itoa(id)
 }

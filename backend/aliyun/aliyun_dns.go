@@ -1,8 +1,10 @@
 package aliyun
 
-import "github.com/tangx/alidns-sdk"
-
-import "errors"
+import (
+	"encoding/json"
+	"github.com/sirupsen/logrus"
+	"github.com/tangx/alidns-sdk"
+)
 
 // Client 阿里云 DNS
 type Client struct {
@@ -16,7 +18,9 @@ func (cli Client) AddRecord(domain, record, rrType, Value string) (recordID stri
 
 	respBody, errBody, err := aliyundns.AddDomainRecord(domain, record, rrType, Value, nil)
 	if err != nil {
-		panic(errors.New(errBody.RequestID + ":" + errBody.Message))
+		errBytes, _ := json.Marshal(errBody)
+		logrus.Fatalf("%s", errBytes)
+
 	}
 	return respBody.RecordId
 }
