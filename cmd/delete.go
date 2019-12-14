@@ -10,7 +10,8 @@ import (
 )
 
 var (
-	areYouSure bool
+	ForceMode bool
+	Confirm   bool
 )
 
 // deleteCmd represents the delete command
@@ -19,8 +20,8 @@ var deleteCmd = &cobra.Command{
 	Short: "删除解析记录",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) < 2 {
-			logrus.Fatalln("参数不够")
+		if len(args) < 1 {
+			logrus.Fatalln("参数不够: dnsx delete example.org [pattern]")
 		}
 
 		DeleteRecord(args)
@@ -28,63 +29,80 @@ var deleteCmd = &cobra.Command{
 }
 
 func init() {
-	deleteCmd.Flags().BoolVarP(&areYouSure, "force", "f", false, "强制模式")
+	deleteCmd.Flags().BoolVarP(&ForceMode, "force", "f", false, "强制模式")
 }
 
 // DeleteRecord 删除解析记录
 // dnsx delete example.org record , then go interactive
 func DeleteRecord(args []string) {
-	domain := args[0]
-	pattern := args[1]
+
+	var domain string
+	var pattern string
+
+	domain = args[0]
+	if len(args) == 1 {
+		pattern = ""
+	} else {
+		pattern = args[1]
+	}
 
 	IClient := GetClient()
 
 	// 获取所有符合 record 查询条件的 Record 解析记录
 	Records := IClient.GetRecords(domain, pattern)
-
-	// 进入交互删除交互界面
-	var promptOpts []string
-	RecordsDict := make(map[string]string)
-
 	if len(Records) == 0 {
 		logrus.Infoln("没有找到匹配的域名解析记录")
 		return
 	}
 
-	if areYouSure {
+	// 进入交互删除交互界面
+	if ForceMode {
 		logrus.Infof("强制删除模式，无需确认   请谨慎操作\n\n")
 	}
+
+	var QsRecordSelectOpts []string
+	RecordsDict := make(map[string]string)
+
 	// 组装数据
 	for _, rr := range Records {
 		// 123841: www A 1.2.3.4 (enable)
-		value := fmt.Sprintf("%s: %s %s %s (%s)", rr.ID, rr.Name, rr.Type, rr.Value, rr.Status)
-		promptOpts = append(promptOpts, value)
+		// format := "%-15s %-20s %-8s %-20s %-10s"
+		format := "%s: (%s) %10s.%s  %-5s  %s "
+		value := fmt.Sprintf(format, rr.ID, rr.Status, rr.Name, domain, rr.Type, rr.Value)
+		QsRecordSelectOpts = append(QsRecordSelectOpts, value)
 		RecordsDict[rr.ID] = value
 	}
 
 	// 准备问题
-	var Answers []string
-	promtpSelect := &survey.MultiSelect{
+	var QsRecordAnsers []string
+	QsRecordMultiSelect := &survey.MultiSelect{
 		Message: "选择要删除的解析记录",
-		Options: promptOpts,
+		Options: QsRecordSelectOpts,
 	}
 
-	promptSure := &survey.Confirm{
-		Message: "已经确认，可以执行删除",
+	QsMakeSure := &survey.Confirm{
+		Message: "确认删除所选列表? ",
 	}
 
-	// 选择
-	survey.AskOne(promtpSelect, &Answers)
-	// 确认
-	if !areYouSure {
-		survey.AskOne(promptSure, &areYouSure)
+	// 选择需要删除的记录对象
+	survey.AskOne(QsRecordMultiSelect, &QsRecordAnsers)
+	if len(QsRecordAnsers) == 0 {
+		logrus.Info("用户取消 或 没有选择删除对象")
+		return
 	}
 
-	for _, answer := range Answers {
+	// 确认删除
+	survey.AskOne(QsMakeSure, &Confirm)
+	if !Confirm {
+		logrus.Infof("用户取消操作\n")
+	}
+
+	// 执行删除
+	for _, answer := range QsRecordAnsers {
 		id := strings.Trim(strings.Split(answer, ":")[0], "")
 
 		result := IClient.DeleteRecord(domain, id)
-		logrus.Infof("删除 %s", RecordsDict[result])
+		logrus.Infof("成功删除 %s", RecordsDict[result])
 	}
 
 }

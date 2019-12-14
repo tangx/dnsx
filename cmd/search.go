@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"text/template"
@@ -16,9 +17,8 @@ var searchCmd = &cobra.Command{
 	Short: "查询记录信息",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		// dnsx get example.com record
-		if len(args) < 2 {
-			logrus.Fatalln("参数不低于 2")
+		if len(args) < 1 {
+			logrus.Fatalf("%s", errors.New("dnsx search example.org [record]"))
 		}
 		GetRecords(args)
 	},
@@ -28,8 +28,14 @@ var searchCmd = &cobra.Command{
 func GetRecords(args []string) {
 	IClient := GetClient()
 
+	var record string
+
 	domain := args[0]
-	record := args[1]
+	if len(args) == 1 {
+		record = ""
+	} else {
+		record = args[1]
+	}
 
 	RRs := IClient.GetRecords(domain, record)
 
