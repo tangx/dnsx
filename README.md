@@ -5,8 +5,11 @@
 + [x] 使用 `interface` 方法实现多 `backend` 接入
 + [x] 使用 `cobra` 创建子命令
   + [x] `add`
-  + [ ] `delete`
+  + [x] `delete`: 交互确认。
   + [ ] `update`
+  + [ ] `enable`, `disable`
+  + [x] `search`
+  + [x] `configure`
 + [x] 使用 `cobra` 实现 `config.json` 的配置
   + [x] 增加
   + [x] 更新

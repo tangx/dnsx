@@ -25,6 +25,7 @@ func init() {
 	rootCmd.AddCommand(configureCmd)
 	rootCmd.AddCommand(addCmd)
 	rootCmd.AddCommand(searchCmd)
+	rootCmd.AddCommand(deleteCmd)
 
 	// global vars
 	rootCmd.PersistentFlags().StringVarP(&global.CfgFile, "config", "c", "$HOME/.dnsx/dnsx.json", "config file")
@@ -43,6 +44,7 @@ func Execute() {
 type Client interface {
 	AddRecord(domain, record, rrType, Value string) (recordID string)
 	GetRecords(domain, record string) (RRs []backend.RecordItem)
+	DeleteRecord(domain, recordID string) string
 }
 
 // GetClient 根据 Provider 返回相应 DNS 客户端

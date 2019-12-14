@@ -72,3 +72,15 @@ func (cli Client) GetRecords(domain, record string) (RRs []backend.RecordItem) {
 
 	return
 }
+
+// DeleteRecord 删除解析记录
+func (cli Client) DeleteRecord(domain string, recordID string) string {
+	qcns := cns.New(cli.AKID, cli.AKEY)
+
+	id, _ := strconv.Atoi(recordID)
+	err := qcns.RecordDelete(domain, id)
+	if err != nil {
+		logrus.Errorf("%s", err)
+	}
+	return recordID
+}

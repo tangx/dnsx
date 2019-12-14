@@ -59,3 +59,14 @@ func (cli Client) GetRecords(domain, record string) (RRs []backend.RecordItem) {
 
 	return
 }
+
+// DeleteRecord 删除域名解析记录
+func (cli Client) DeleteRecord(domain string, id string) string {
+	aliyundns := alidns.New(cli.AKID, cli.AKEY)
+	respBody, errBody, err := aliyundns.DeleteDomainRecord(id)
+	if err != nil {
+		logrus.Errorf("%s : %s", errBody.RequestID, errBody.Message)
+	}
+
+	return respBody.RecordId
+}
