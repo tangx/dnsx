@@ -52,11 +52,11 @@ func (cli Client) GetRecords(domain, record string) (RRs []backend.RecordItem) {
 		logrus.Fatalln(err)
 	}
 
-	patt := fmt.Sprintf(".*%s.*", record)
-	compl := regexp.MustCompile(patt)
+	pattern := fmt.Sprintf(".*%s.*", record)
+	re := regexp.MustCompile(pattern)
 
 	for _, rr := range records {
-		if compl.Match([]byte(rr.Name)) {
+		if re.Match([]byte(rr.Name)) {
 			// 偷懒初始化值的警告
 			// https://www.maodapeng.com/topic/10030.html
 			// composite literal uses unkeyed fields
