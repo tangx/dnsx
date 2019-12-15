@@ -64,17 +64,17 @@ func DeleteRecord(args []string) {
 	RecordsDict := make(map[string]string)
 
 	// 组装数据
+	// format := "%-15s %-20s %-8s %-20s %-10s"
+	format := "%s: (%s) %10s.%s  %-5s  %s "
 	for _, rr := range Records {
 		// 123841: www A 1.2.3.4 (enable)
-		// format := "%-15s %-20s %-8s %-20s %-10s"
-		format := "%s: (%s) %10s.%s  %-5s  %s "
 		value := fmt.Sprintf(format, rr.ID, rr.Status, rr.Name, domain, rr.Type, rr.Value)
 		QsRecordSelectOpts = append(QsRecordSelectOpts, value)
 		RecordsDict[rr.ID] = value
 	}
 
 	// 准备问题
-	var QsRecordAnsers []string
+	var QsRecordAnswers []string
 	QsRecordMultiSelect := &survey.MultiSelect{
 		Message: "选择要删除的解析记录",
 		Options: QsRecordSelectOpts,
@@ -85,8 +85,8 @@ func DeleteRecord(args []string) {
 	}
 
 	// 选择需要删除的记录对象
-	survey.AskOne(QsRecordMultiSelect, &QsRecordAnsers)
-	if len(QsRecordAnsers) == 0 {
+	survey.AskOne(QsRecordMultiSelect, &QsRecordAnswers)
+	if len(QsRecordAnswers) == 0 {
 		logrus.Info("用户取消 或 没有选择删除对象")
 		return
 	}
@@ -98,7 +98,7 @@ func DeleteRecord(args []string) {
 	}
 
 	// 执行删除
-	for _, answer := range QsRecordAnsers {
+	for _, answer := range QsRecordAnswers {
 		id := strings.Trim(strings.Split(answer, ":")[0], "")
 
 		result := IClient.DeleteRecord(domain, id)
