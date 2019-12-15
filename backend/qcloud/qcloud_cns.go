@@ -35,15 +35,6 @@ func (cli Client) AddRecord(domain, rr, rrType, rrValue string) (recordID string
 	return strconv.Itoa(id)
 }
 
-// // RecordItem response
-// type RecordItem struct {
-// 	ID     string
-// 	Name   string
-// 	Type   string
-// 	Value  string
-// 	Status string
-// }
-
 // GetRecords 查询 DNS 解析记录
 func (cli Client) GetRecords(domain, record string) (RRs []backend.RecordItem) {
 	qcns := cns.New(cli.AKID, cli.AKEY)
@@ -60,12 +51,19 @@ func (cli Client) GetRecords(domain, record string) (RRs []backend.RecordItem) {
 			// 偷懒初始化值的警告
 			// https://www.maodapeng.com/topic/10030.html
 			// composite literal uses unkeyed fields
+			var Status string
+			if rr.Enabled == 1 {
+				Status = "enable"
+			} else {
+				Status = "disable"
+			}
+
 			RRs = append(RRs, backend.RecordItem{
 				strconv.Itoa(rr.Id),
 				rr.Name,
 				rr.Type,
 				rr.Value,
-				rr.Status,
+				Status,
 			})
 		}
 	}
@@ -79,6 +77,17 @@ func (cli Client) DeleteRecord(domain string, recordID string) string {
 
 	id, _ := strconv.Atoi(recordID)
 	err := qcns.RecordDelete(domain, id)
+	if err != nil {
+		logrus.Errorf("%s", err)
+	}
+	return recordID
+}
+
+func (cli Client) SetRecordStatus(domain string, recordID string, status bool) string {
+	qcns := cns.New(cli.AKID, cli.AKEY)
+
+	rID, _ := strconv.Atoi(recordID)
+	err := qcns.RecordStatus(domain, rID, status)
 	if err != nil {
 		logrus.Errorf("%s", err)
 	}

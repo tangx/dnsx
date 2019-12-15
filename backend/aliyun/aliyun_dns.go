@@ -27,15 +27,6 @@ func (cli Client) AddRecord(domain, record, rrType, Value string) (recordID stri
 	return respBody.RecordId
 }
 
-// // RecordItem response
-// type RecordItem struct {
-// 	ID     string
-// 	Name   string
-// 	Type   string
-// 	Value  string
-// 	Status string
-// }
-
 // GetRecords 查询 DNS 解析记录
 func (cli Client) GetRecords(domain, record string) (RRs []backend.RecordItem) {
 	aliyundns := alidns.New(cli.AKID, cli.AKEY)
@@ -64,6 +55,17 @@ func (cli Client) GetRecords(domain, record string) (RRs []backend.RecordItem) {
 func (cli Client) DeleteRecord(domain string, id string) string {
 	aliyundns := alidns.New(cli.AKID, cli.AKEY)
 	respBody, errBody, err := aliyundns.DeleteDomainRecord(id)
+	if err != nil {
+		logrus.Errorf("%s : %s", errBody.RequestID, errBody.Message)
+	}
+
+	return respBody.RecordId
+}
+
+func (cli Client) SetRecordStatus(domain string, recordID string, status bool) string {
+	aliyundns := alidns.New(cli.AKID, cli.AKEY)
+
+	respBody, errBody, err := aliyundns.SetDomainRecordStatus(recordID, status)
 	if err != nil {
 		logrus.Errorf("%s : %s", errBody.RequestID, errBody.Message)
 	}
