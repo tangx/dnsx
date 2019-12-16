@@ -1,5 +1,49 @@
 # DNSx
 
+
+## Usage
+
+```bash
+DNSx 配置管理 DNS 解析
+
+Usage:
+  dnsx [command]
+
+Available Commands:
+  add         添加域名解析
+  configure   管理配置文件
+  delete      删除解析记录
+  help        Help about any command
+  search      查询记录信息
+  switch      切换域名状态
+
+Flags:
+  -c, --config string    config file (default "$HOME/.dnsx/dnsx.json")
+  -h, --help             help for dnsx
+  -p, --profile string   profile (default "default")
+
+Use "dnsx [command] --help" for more information about a command.
+```
+
++ `dnsx profile configure`
+![](./docs/images/dns-configure.gif)
+
++ `dnsx record add`
+![](./docs/images/dnsx-add.gif)
+
++ `dnsx record switch`
+![](./docs/images/dns-switch.gif)
+
++ `dnsx record search`
+![](./docs/images/dns-search.gif)
+
++ `dnsx record delete`
+![](./docs/images/dns-delete.gif)
+
+
+
+## Todo List
+
 多后台的 dns 解析配置命令行
 
 + [x] 使用 `interface` 方法实现多 `backend` 接入
@@ -7,7 +51,7 @@
   + [x] `add`
   + [x] `delete`: 交互确认。
   + [ ] `update`
-  + [ ] `enable`, `disable`
+  + [x] `enable`, `disable`
   + [x] `search`
   + [x] `configure`
 + [x] 使用 `cobra` 实现 `config.json` 的配置
