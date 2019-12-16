@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
@@ -66,9 +65,6 @@ func dumpByPrintf(RRs []backend.RecordItem) {
 	fmt.Println("")
 	for _, rr := range RRs {
 		fmt.Printf(format, rr.ID, rr.Name, rr.Type, rr.Value, rr.Status)
-
-		tmpS, _ := json.MarshalIndent(rr, "", "  ")
-		fmt.Println(string(tmpS))
 	}
 	fmt.Println("")
 }
