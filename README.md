@@ -26,19 +26,19 @@ Use "dnsx [command] --help" for more information about a command.
 ```
 
 + `dnsx profile configure`
-![](./docs/images/dns-configure.gif)
+![](./docs/images/dnsx-configure.gif)
 
 + `dnsx record add`
 ![](./docs/images/dnsx-add.gif)
 
 + `dnsx record switch`
-![](./docs/images/dns-switch.gif)
+![](./docs/images/dnsx-switch.gif)
 
 + `dnsx record search`
-![](./docs/images/dns-search.gif)
+![](./docs/images/dnsx-search.gif)
 
 + `dnsx record delete`
-![](./docs/images/dns-delete.gif)
+![](./docs/images/dnsx-delete.gif)
 
 
 
