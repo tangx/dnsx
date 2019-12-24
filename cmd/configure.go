@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/sirupsen/logrus"
@@ -16,6 +17,22 @@ var configureCmd = &cobra.Command{
 	// Run: func(cmd *cobra.Command, args []string) {
 	// 	ConfigureMain()
 	// },
+}
+
+var configureDomainsCmd = &cobra.Command{
+	Use:   "domains",
+	Short: "列出 Config 中的所有 Profile 中的所有域名",
+	Run: func(cmd *cobra.Command, args []string) {
+		Domains()
+	},
+}
+
+var configureListCmd = &cobra.Command{
+	Use:   "list",
+	Short: "列出 Config 中的所有 profile",
+	Run: func(cmd *cobra.Command, args []string) {
+		ListProfile()
+	},
 }
 
 var configureAddCmd = &cobra.Command{
@@ -45,6 +62,8 @@ func init() {
 	configureCmd.AddCommand(configureAddCmd)
 	configureCmd.AddCommand(configureCurrentCmd)
 	configureCmd.AddCommand(configureDeleteCmd)
+	configureCmd.AddCommand(configureListCmd)
+	configureCmd.AddCommand(configureDomainsCmd)
 }
 
 // AddProfile 增加
@@ -155,4 +174,29 @@ func SetCurrent() {
 	dnsx.Current = global.Profile
 
 	dnsx.Dump(global.CfgFile)
+}
+
+// ListProfile 返回当前 config 中的所有 profile
+func ListProfile() {
+	dnsx := global.Load()
+	var l []string
+	for key := range dnsx.Items {
+		l = append(l, key)
+	}
+
+	fmt.Println(strings.Join(l, " "))
+}
+
+// Domains 返回当前 profile 中的所有 domain
+func Domains() {
+	dnsx := global.Load()
+
+	var p string
+	if global.Profile == "default" {
+		p = dnsx.Current
+	} else {
+		p = global.Profile
+	}
+	item := dnsx.Items[p]
+	fmt.Println(strings.Join(item.Domains, " "))
 }
