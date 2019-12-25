@@ -42,8 +42,6 @@ Use "dnsx [command] --help" for more information about a command.
 + `dnsx record delete`
 ![](./docs/images/dnsx-delete.gif)
 
-
-
 ## Todo List
 
 多后台的 dns 解析配置命令行
@@ -61,7 +59,8 @@ Use "dnsx [command] --help" for more information about a command.
   + [x] 更新
   + [x] 优化 `LoadConfig()` 加载位置
 
-+ [ ] 完成 `auto-complete` for zsh: 支持子命令补全， `config.json` 中的域名列表补全
++ [x] 完成 `auto-complete` for zsh: 支持子命令补全， `config.json` 中的域名列表补全
+  `source /path/to/dnsx.completion.bash`
 
 + 支持多后台
   + [x] `qcloud cns`
