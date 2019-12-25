@@ -36,15 +36,24 @@ __dnsx_add_completions()
     prev="${COMP_WORDS[COMP_CWORD-1]}"
 
     case ${prev} in 
-    add)  COMPREPLY=( $(compgen -W "${typeOpts}" -- ${cur}) ) ;;
-    *)  COMPREPLY=( $(compgen -W "${domainOpts}" -- ${cur}) ) ;;
+    add)  COMPREPLY=( $(compgen -W "${typeOpts}" -- ${cur}) ); return 0 ;;
+    CNAME|A)  COMPREPLY=( $(compgen -W "${domainOpts}" -- ${cur}) ); return 0 ;;
+    *) COMPREPLY=( $(compgen -W "record value" -- ${cur}) ); return 0 ;;
     esac
 
 }
 
 __dnsx__delete_completions()
 {
-    local
+    local cur prev
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+    case ${prev} in 
+    delete)  COMPREPLY=( $(compgen -W "${domainOpts}" -- ${cur}) ); return 0 ;;
+    search)  COMPREPLY=( $(compgen -W "${domainOpts}" -- ${cur}) ); return 0 ;;
+    switch)  COMPREPLY=( $(compgen -W "${domainOpts}" -- ${cur}) ); return 0 ;;
+    esac
 }
 
 __dnsx_subcommand()
@@ -101,15 +110,21 @@ _dnsx_completions()
     }
     fi
 
+    # command=${prev}
     # main command
     subcmdOpts="add delete search switch configure help"
     domainOpts=$(dnsx configure domains ${COMP_LINE})
     case ${command} in
-    "dnsx")
+    # "dnsx")
+    #     COMPREPLY=( $(compgen -W "${subcmdOpts}" -- ${cur}) ) 
+    #     return 0 
+    #     ;; 
+    "add") __dnsx_add_completions ${domainOpts}; return 0 ;;
+    "delete"|"search"|"switch") __dnsx__delete_completions ${domainOpts} ; return 0 ;;
+    *)
         COMPREPLY=( $(compgen -W "${subcmdOpts}" -- ${cur}) ) 
         return 0 
         ;; 
-    "add") __dnsx_add_completions ${domainOpts} ;;
     esac 
 }
 
