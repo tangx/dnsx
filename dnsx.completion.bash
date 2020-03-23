@@ -36,9 +36,9 @@ __dnsx_add_completions()
     prev="${COMP_WORDS[COMP_CWORD-1]}"
 
     case ${prev} in 
-    add)  COMPREPLY=( $(compgen -W "${typeOpts}" -- ${cur}) ); return 0 ;;
-    CNAME|A)  COMPREPLY=( $(compgen -W "${domainOpts}" -- ${cur}) ); return 0 ;;
-    *) COMPREPLY=( $(compgen -W "record value" -- ${cur}) ); return 0 ;;
+    add)      COMPREPLY=( $(compgen -W "${typeOpts}" -- ${cur}) ); return 0 ;;
+    CNAME|A|a|cname)  COMPREPLY=( $(compgen -W "${domainOpts}" -- ${cur}) ); return 0 ;;
+    *)        COMPREPLY=( $(compgen -W "record value" -- ${cur}) ); return 0 ;;
     esac
 
 }
