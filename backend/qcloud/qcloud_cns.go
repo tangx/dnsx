@@ -64,6 +64,7 @@ func (cli Client) GetRecords(domain, record string) (RRs []backend.RecordItem) {
 				rr.Type,
 				rr.Value,
 				Status,
+				rr.UpdatedOn,
 			})
 		}
 	}

@@ -45,6 +45,7 @@ func (cli Client) GetRecords(domain, record string) (RRs []backend.RecordItem) {
 			rr.Type,
 			rr.Value,
 			rr.Status,
+			"", // aliyun 没有记录解析修改时间
 		})
 	}
 

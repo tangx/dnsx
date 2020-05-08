@@ -44,7 +44,7 @@ func GetRecords(args []string) {
 
 func dumpByTemplate(RRs []backend.RecordItem) {
 
-	tepl := `{{range .}}{{.ID}} {{.Name}} {{.Type}} {{.Value}} {{.Status}}
+	tepl := `{{range .}}{{.ID}} {{.Name}} {{.Type}} {{.Value}} {{.Status}} {{ .UpdateOn }}
 {{end}}`
 
 	tmpl, _ := template.New("records").Parse(tepl)
@@ -58,13 +58,13 @@ func dumpByPrintf(RRs []backend.RecordItem) {
 	// https://blog.csdn.net/w616589292/article/details/51078787
 	// colorFormat := "%c[1;31;41m%-20s %-20s %-8s %-20s %-10s%c[0m\n"
 
-	format := "%-15s %-20s %-8s %-20s %-10s\n"
+	format := "%-15s %-20s %-8s %-20s %-10s %-10s\n"
 
 	fmt.Println("")
-	fmt.Printf(format, "RecordID", "Record", "Type", "Value", "Status")
+	fmt.Printf(format, "RecordID", "Record", "Type", "Value", "Status", "Last Update Time")
 	fmt.Println("")
 	for _, rr := range RRs {
-		fmt.Printf(format, rr.ID, rr.Name, rr.Type, rr.Value, rr.Status)
+		fmt.Printf(format, rr.ID, rr.Name, rr.Type, rr.Value, rr.Status, rr.UpdateOn)
 	}
 	fmt.Println("")
 }
