@@ -65,10 +65,10 @@ func DeleteRecord(args []string) {
 
 	// 组装数据
 	// format := "%-15s %-20s %-8s %-20s %-10s"
-	format := "%s: (%s) %10s.%s  %-5s  %s "
+	format := "%s: (%s) %10s.%s  %-5s  %-10s  %-10s"
 	for _, rr := range Records {
 		// 123841: www A 1.2.3.4 (enable)
-		value := fmt.Sprintf(format, rr.ID, rr.Status, rr.Name, domain, rr.Type, rr.Value)
+		value := fmt.Sprintf(format, rr.ID, rr.Status, rr.Name, domain, rr.Type, rr.Value, rr.UpdateOn)
 		QsRecordSelectOpts = append(QsRecordSelectOpts, value)
 		RecordsDict[rr.ID] = value
 	}

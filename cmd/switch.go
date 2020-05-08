@@ -50,9 +50,9 @@ func SwitchRecordStatus(args []string) {
 	var QsRecordSelectOpts []string
 	var QsRecordAnswers []string
 
-	format := "%s: (%s) %10s.%s  %-5s  %s "
+	format := "%s: (%s) %10s.%s  %-5s  %-10s  %-10s"
 	for _, rr := range Records {
-		value := fmt.Sprintf(format, rr.ID, rr.Status, rr.Name, domain, rr.Type, rr.Value)
+		value := fmt.Sprintf(format, rr.ID, rr.Status, rr.Name, domain, rr.Type, rr.Value, rr.UpdateOn)
 		QsRecordSelectOpts = append(QsRecordSelectOpts, value)
 	}
 	QsRecordMultiSelect := &survey.MultiSelect{
