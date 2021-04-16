@@ -5,13 +5,11 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"github.com/tangx/alidns-sdk"
-	"github.com/tangx/dnsx/backend"
+	"github.com/tangx/dnsx/pkg/backend"
 )
 
 // Client 阿里云 DNS
 type Client struct {
-	// AKID string `json:"akid"`
-	// AKEY string `json:"akey"`
 	cli *alidns.Client
 }
 
