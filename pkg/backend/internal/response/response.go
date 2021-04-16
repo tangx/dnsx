@@ -1,4 +1,4 @@
-package backend
+package response
 
 // RecordItem response
 type RecordItem struct {

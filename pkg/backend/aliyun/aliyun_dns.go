@@ -5,7 +5,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"github.com/tangx/alidns-sdk"
-	"github.com/tangx/dnsx/pkg/backend"
+	"github.com/tangx/dnsx/pkg/backend/internal/response"
 )
 
 // Client 阿里云 DNS
@@ -37,7 +37,7 @@ func (c Client) AddRecord(domain, record, rrType, Value string) (recordID string
 }
 
 // GetRecords 查询 DNS 解析记录
-func (c Client) GetRecords(domain, record string) (RRs []backend.RecordItem) {
+func (c Client) GetRecords(domain, record string) (RRs []response.RecordItem) {
 
 	reqBody := map[string]string{"RRKeyWord": record, "PageSize": "500"}
 
@@ -47,7 +47,7 @@ func (c Client) GetRecords(domain, record string) (RRs []backend.RecordItem) {
 	}
 
 	for _, rr := range respInfo.DomainRecords.Record {
-		RRs = append(RRs, backend.RecordItem{
+		RRs = append(RRs, response.RecordItem{
 			ID:       rr.RecordId,
 			Name:     rr.RR,
 			Type:     rr.Type,

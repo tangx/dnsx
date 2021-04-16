@@ -8,7 +8,7 @@ import (
 
 	cns "github.com/go-http/qcloud-cns"
 	"github.com/sirupsen/logrus"
-	"github.com/tangx/dnsx/pkg/backend"
+	"github.com/tangx/dnsx/pkg/backend/internal/response"
 )
 
 // Client 腾讯云 DNS
@@ -17,10 +17,10 @@ type Client struct {
 }
 
 // NewClient 返回一个新的 Qcloud / Dnspod 客户端
-func NewClient(akid string, token string) Client {
+func NewClient(akid string, akey string) Client {
 	c := Client{}
 	if c.cli == nil {
-		c.cli = cns.New(akid, token)
+		c.cli = cns.New(akid, akey)
 	}
 	return c
 }
@@ -43,7 +43,7 @@ func (c Client) AddRecord(domain, rr, rrType, rrValue string) (recordID string) 
 }
 
 // GetRecords 查询 DNS 解析记录
-func (c Client) GetRecords(domain, record string) (RRs []backend.RecordItem) {
+func (c Client) GetRecords(domain, record string) (RRs []response.RecordItem) {
 
 	records, err := c.cli.RecordList(domain)
 	if err != nil {
@@ -62,7 +62,7 @@ func (c Client) GetRecords(domain, record string) (RRs []backend.RecordItem) {
 				Status = "disable"
 			}
 
-			RRs = append(RRs, backend.RecordItem{
+			RRs = append(RRs, response.RecordItem{
 				ID:       strconv.Itoa(rr.Id),
 				Name:     rr.Name,
 				Type:     rr.Type,
@@ -70,6 +70,7 @@ func (c Client) GetRecords(domain, record string) (RRs []backend.RecordItem) {
 				Status:   Status,
 				UpdateOn: rr.UpdatedOn,
 			})
+
 		}
 	}
 
