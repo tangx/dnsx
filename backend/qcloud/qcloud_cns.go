@@ -13,14 +13,21 @@ import (
 
 // Client 腾讯云 DNS
 type Client struct {
-	AKID string
-	AKEY string
+	cli *cns.Client
+}
+
+// NewClient 返回一个新的 Qcloud / Dnspod 客户端
+func NewClient(akid string, token string) Client {
+	c := Client{}
+	if c.cli == nil {
+		c.cli = cns.New(akid, token)
+	}
+	return c
 }
 
 // AddRecord 添加解析记录
-func (cli Client) AddRecord(domain, rr, rrType, rrValue string) (recordID string) {
-	qcns := cns.New(cli.AKID, cli.AKEY)
-	id, err := qcns.RecordCreate(
+func (c Client) AddRecord(domain, rr, rrType, rrValue string) (recordID string) {
+	id, err := c.cli.RecordCreate(
 		domain,
 		cns.Record{
 			Name:  rr,
@@ -36,9 +43,9 @@ func (cli Client) AddRecord(domain, rr, rrType, rrValue string) (recordID string
 }
 
 // GetRecords 查询 DNS 解析记录
-func (cli Client) GetRecords(domain, record string) (RRs []backend.RecordItem) {
-	qcns := cns.New(cli.AKID, cli.AKEY)
-	records, err := qcns.RecordList(domain)
+func (c Client) GetRecords(domain, record string) (RRs []backend.RecordItem) {
+
+	records, err := c.cli.RecordList(domain)
 	if err != nil {
 		logrus.Fatalln(err)
 	}
@@ -48,9 +55,6 @@ func (cli Client) GetRecords(domain, record string) (RRs []backend.RecordItem) {
 
 	for _, rr := range records {
 		if re.Match([]byte(rr.Name)) {
-			// 偷懒初始化值的警告
-			// https://www.maodapeng.com/topic/10030.html
-			// composite literal uses unkeyed fields
 			var Status string
 			if rr.Enabled == 1 {
 				Status = "enable"
@@ -59,12 +63,12 @@ func (cli Client) GetRecords(domain, record string) (RRs []backend.RecordItem) {
 			}
 
 			RRs = append(RRs, backend.RecordItem{
-				strconv.Itoa(rr.Id),
-				rr.Name,
-				rr.Type,
-				rr.Value,
-				Status,
-				rr.UpdatedOn,
+				ID:       strconv.Itoa(rr.Id),
+				Name:     rr.Name,
+				Type:     rr.Type,
+				Value:    rr.Value,
+				Status:   Status,
+				UpdateOn: rr.UpdatedOn,
 			})
 		}
 	}
@@ -73,24 +77,25 @@ func (cli Client) GetRecords(domain, record string) (RRs []backend.RecordItem) {
 }
 
 // DeleteRecord 删除解析记录
-func (cli Client) DeleteRecord(domain string, recordID string) string {
-	qcns := cns.New(cli.AKID, cli.AKEY)
+func (c Client) DeleteRecord(domain string, recordID string) string {
 
 	id, _ := strconv.Atoi(recordID)
-	err := qcns.RecordDelete(domain, id)
+	err := c.cli.RecordDelete(domain, id)
 	if err != nil {
 		logrus.Errorf("%s", err)
 	}
 	return recordID
+
 }
 
-func (cli Client) SetRecordStatus(domain string, recordID string, status bool) string {
-	qcns := cns.New(cli.AKID, cli.AKEY)
+// SetRecordStatus 设置域名解析记录状态
+func (c Client) SetRecordStatus(domain string, recordID string, status bool) string {
 
 	rID, _ := strconv.Atoi(recordID)
-	err := qcns.RecordStatus(domain, rID, status)
+	err := c.cli.RecordStatus(domain, rID, status)
 	if err != nil {
 		logrus.Errorf("%s", err)
 	}
 	return recordID
+
 }
