@@ -18,7 +18,7 @@ var rootCmd = &cobra.Command{
 	Use:  "dnsx",
 	Long: fmt.Sprintf("version: v%s", version.Version),
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		// _ = cmd.Help()
+
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 	},

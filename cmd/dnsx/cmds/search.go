@@ -6,7 +6,6 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/tangx/cobrautils"
 	"github.com/tangx/dnsx/cmd/dnsx/global"
 	"github.com/tangx/dnsx/pkg/backend/http/response"
 )
@@ -22,12 +21,15 @@ var searchCmd = &cobra.Command{
 }
 
 func init() {
-	cobrautils.BindFlags(searchCmd, &global.Flags)
+	// cobrautils.BindFlags(searchCmd, &global.Flags)
 }
 
 func Search() {
-	domain := global.Flags.Domain
-	record := global.Flags.Record
+
+	flag := global.Flags
+
+	domain := flag.Domain
+	record := flag.Record
 
 	if len(domain) == 0 {
 		logrus.Errorf("error domain or record: domain ->(%s); record ->(%s)", domain, record)
