@@ -27,7 +27,7 @@ func init() {
 
 func Search() {
 	domain := global.Flags.Domain
-	record := global.Flags.Name
+	record := global.Flags.Record
 
 	if len(domain) == 0 {
 		logrus.Errorf("error domain or record: domain ->(%s); record ->(%s)", domain, record)

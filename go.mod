@@ -9,7 +9,7 @@ require (
 	github.com/spf13/cobra v1.1.3
 	github.com/stretchr/testify v1.4.0 // indirect
 	github.com/tangx/alidns-sdk v1.0.10
-	github.com/tangx/cobrautils v1.1.3
+	github.com/tangx/cobrautils v1.1.3-1
 	golang.org/x/sys v0.0.0-20210217105451-b926d437f341 // indirect
 	gopkg.in/yaml.v2 v2.4.0
 )
