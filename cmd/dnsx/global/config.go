@@ -1,5 +1,10 @@
 package global
 
+import (
+	"os"
+	"path"
+)
+
 type CommandFlags struct {
 	Type    string `flag:"type" shorthand:"t" usage:"record type, ex: cname,a,txt"`
 	Name    string `flag:"name" shorthand:"n" usage:"record name: ex: www"`
@@ -14,3 +19,7 @@ var Flags = CommandFlags{
 	Status:  true,
 	Profile: "current",
 }
+
+var (
+	ConfigFile = path.Join(os.Getenv("HOME"), ".dnsx", "config.yml")
+)

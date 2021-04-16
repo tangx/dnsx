@@ -44,3 +44,5 @@ apply: install dnsx.buildx dnsx.deploy
 debug: install
 	COMMIT_SHA=${COMMIT_SHA} dnsx run env | grep PROJECT_
 
+tidy:
+	go mod tidy

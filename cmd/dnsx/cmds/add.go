@@ -2,8 +2,6 @@ package cmds
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/tangx/cobrautils"
-	"github.com/tangx/dnsx/cmd/dnsx/global"
 )
 
 var addCmd = &cobra.Command{
@@ -16,7 +14,7 @@ var addCmd = &cobra.Command{
 }
 
 func init() {
-	cobrautils.BindFlags(addCmd, &global.Flags)
+	// cobrautils.BindFlags(addCmd, &global.Flags)
 }
 
 func AddRecord() {

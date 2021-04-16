@@ -5,7 +5,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"github.com/tangx/alidns-sdk"
-	"github.com/tangx/dnsx/pkg/backend/internal/response"
+	"github.com/tangx/dnsx/pkg/backend/http/response"
 )
 
 // Client 阿里云 DNS
