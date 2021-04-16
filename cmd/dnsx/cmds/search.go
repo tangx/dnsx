@@ -13,15 +13,9 @@ import (
 var searchCmd = &cobra.Command{
 	Use:  "search",
 	Long: `Add Dns Record`,
-	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-	},
 	Run: func(cmd *cobra.Command, args []string) {
 		Search()
 	},
-}
-
-func init() {
-	// cobrautils.BindFlags(searchCmd, &global.Flags)
 }
 
 func Search() {
