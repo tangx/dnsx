@@ -32,6 +32,7 @@ func init() {
 	rootCmd.AddCommand(deleteCmd)
 	rootCmd.AddCommand(switchCmd)
 
+	rootCmd.AddCommand(configureCmd)
 	// binding flags
 	cobrautils.BindFlags(rootCmd, &global.Flags)
 }

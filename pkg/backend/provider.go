@@ -10,3 +10,7 @@ type DnsClient interface {
 	DeleteRecord(domain, recordID string) string
 	SetRecordStatus(domain string, recordID string, status bool) string
 }
+
+var (
+	Providers = []string{"aliyun", "qcloud"}
+)
