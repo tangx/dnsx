@@ -1,6 +1,7 @@
 package dnsxctx
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/sirupsen/logrus"
@@ -52,6 +53,16 @@ func (dc *DnsxConfig) DeleteItem(name string) {
 	}
 
 	dc.DumpYaml()
+}
+
+func (dc *DnsxConfig) SetDefault(name string) (bool, error) {
+	if _, ok := dc.Items[name]; ok {
+		dc.Current = name
+		dc.DumpYaml()
+		return true, nil
+	}
+
+	return false, fmt.Errorf("set default profile failed: no profile named %s", name)
 }
 
 func (dc *DnsxConfig) DumpYaml() {
