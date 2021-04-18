@@ -16,12 +16,13 @@ var dcli backend.DnsClient
 
 var rootCmd = &cobra.Command{
 	Use:     "dnsx",
-	Long:    "dnsx 一款命令行 dns 解析客户端",
-	Version: fmt.Sprintf("version: v%s", version.Version),
+	Short:   "dnsx 一款命令行 dns 解析客户端",
+	Version: fmt.Sprintf("version: %s", version.Version),
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		SetDefualts()
 	},
 	Run: func(cmd *cobra.Command, args []string) {
+		_ = cmd.Help()
 	},
 }
 
@@ -31,8 +32,8 @@ func init() {
 	rootCmd.AddCommand(searchCmd)
 	rootCmd.AddCommand(deleteCmd)
 	rootCmd.AddCommand(switchCmd)
-
 	rootCmd.AddCommand(configureCmd)
+
 	// binding flags
 	cobrautils.BindFlags(rootCmd, &global.Flags)
 }
@@ -49,7 +50,7 @@ func SetDefualts() {
 	var err error
 	dcli, err = dnsxctx.NewDnsxClient()
 	if err != nil {
-		logrus.Fatalf("Get Dnsx Client failed: %w", err)
+		logrus.Fatalf("Get Dnsx Client failed: %v", err)
 	}
 
 }

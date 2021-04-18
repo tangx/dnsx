@@ -34,7 +34,7 @@ func MustFileExists(path string) {
 func HomeDir() (string, error) {
 	u, err := user.Current()
 	if err != nil {
-		return "", fmt.Errorf("get user home dir failed: %w", err)
+		return "", fmt.Errorf("get user home dir failed: %v", err)
 
 	}
 	return u.HomeDir, nil
@@ -43,7 +43,7 @@ func HomeDir() (string, error) {
 func MustHomeDir() string {
 	homedir, err := HomeDir()
 	if err != nil {
-		logrus.Fatalf("get home dir failed: %w", err)
+		logrus.Fatalf("get home dir failed: %v", err)
 	}
 	return homedir
 }

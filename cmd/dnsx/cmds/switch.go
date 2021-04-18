@@ -44,7 +44,7 @@ func SwitchRecordStatus() {
 		Options: QsRecordSelectOpts,
 	}
 
-	survey.AskOne(QsRecordMultiSelect, &QsRecordAnswers)
+	_ = survey.AskOne(QsRecordMultiSelect, &QsRecordAnswers)
 
 	if len(QsRecordAnswers) == 0 {
 		logrus.Infoln("用户取消或无记录选择")
@@ -57,7 +57,7 @@ func SwitchRecordStatus() {
 		Options: []string{"enable", "disable"},
 	}
 	var QsRecordStatusAnswer string
-	survey.AskOne(QsRecordStatus, &QsRecordStatusAnswer)
+	_ = survey.AskOne(QsRecordStatus, &QsRecordStatusAnswer)
 
 	var status bool
 	if QsRecordStatusAnswer == "enable" {

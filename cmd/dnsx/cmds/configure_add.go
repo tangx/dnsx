@@ -61,12 +61,12 @@ func AddProfile() {
 	}
 
 	if item.Provider == "aliyun" || item.Provider == "qcloud" {
-		survey.Ask(qsLoginWithKey, &item)
+		_ = survey.Ask(qsLoginWithKey, &item)
 	}
 
 	var confirm bool = false
 
-	survey.AskOne(&survey.Confirm{
+	_ = survey.AskOne(&survey.Confirm{
 		Message: fmt.Sprintf("是否添加 %s 到配置中", global.Flags.Profile),
 	}, &confirm)
 

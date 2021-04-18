@@ -31,7 +31,7 @@ func DeleteProfile() {
 	fmt.Println(profiles)
 
 	var profile string
-	survey.AskOne(
+	_ = survey.AskOne(
 		&survey.Select{
 			Message: "选择需要删除的 Profile",
 			Options: profiles,
@@ -42,7 +42,7 @@ func DeleteProfile() {
 	fmt.Println(profile)
 
 	confirm := false
-	survey.AskOne(
+	_ = survey.AskOne(
 		&survey.Confirm{Message: fmt.Sprintf("确认删除 %s ？", profile)},
 		&confirm,
 	)
