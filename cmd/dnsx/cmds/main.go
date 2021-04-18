@@ -17,7 +17,7 @@ var dcli backend.DnsClient
 var rootCmd = &cobra.Command{
 	Use:     "dnsx",
 	Short:   "dnsx 一款命令行 dns 解析客户端",
-	Version: fmt.Sprintf("version: %s", version.Version),
+	Version: fmt.Sprintf(version.Version),
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		SetDefualts()
 	},
