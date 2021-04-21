@@ -35,6 +35,9 @@ func init() {
 	rootCmd.AddCommand(configureCmd)
 	rootCmd.AddCommand(completionCmd)
 
+	// add httpserver
+	rootCmd.AddCommand(httpserverCmd)
+
 	// binding flags
 	cobrautils.BindFlags(rootCmd, &global.Flags)
 }
