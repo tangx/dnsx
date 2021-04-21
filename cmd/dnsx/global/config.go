@@ -3,6 +3,8 @@ package global
 import (
 	"os"
 	"path"
+
+	"github.com/tangx/dnsx/pkg/pgconf"
 )
 
 type CommandFlags struct {
@@ -23,3 +25,11 @@ var Flags = CommandFlags{
 var (
 	ConfigFile = path.Join(os.Getenv("HOME"), ".dnsx", "config.yml")
 )
+
+var Postgres = pgconf.Postgres{
+	Addr:     "127.0.0.1",
+	Port:     5432,
+	User:     "postgres",
+	Password: "Abc123123",
+	DbName:   "dnsx",
+}

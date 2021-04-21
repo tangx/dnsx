@@ -46,3 +46,6 @@ debug: install
 
 tidy:
 	go mod tidy
+
+httpserver:
+	cd cmd/dnsx && go run . httpserver

@@ -18,4 +18,6 @@ require (
 	golang.org/x/term v0.0.0-20210406210042-72f3dc4e9b72 // indirect
 	golang.org/x/text v0.3.6 // indirect
 	gopkg.in/yaml.v2 v2.4.0
+	gorm.io/driver/postgres v1.0.8
+	gorm.io/gorm v1.21.8
 )
