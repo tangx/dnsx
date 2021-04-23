@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
+	"github.com/tangx/dnsx/pkg/httpserver/apis"
 )
 
 var (
@@ -22,6 +23,7 @@ type ServerFlag struct {
 
 func init() {
 	server = gin.Default()
+	apis.RegisterBaseRouter(server)
 }
 
 func Run() error {

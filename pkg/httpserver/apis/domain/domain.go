@@ -1,12 +1,16 @@
 package domain
 
-import "gorm.io/gorm"
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/tangx/dnsx/pkg/httpserver/apis/domain/record"
+)
 
-type Domain struct {
-	gorm.Model
-	Name string
-}
+func RegisterRouters(rg *gin.RouterGroup) {
+	domain := rg.Group("/domain/:domain")
 
-func CreateDomain(name string) {
+	domain.GET("")
+
+	// sub routers
+	record.RegisterRouters(domain)
 
 }
