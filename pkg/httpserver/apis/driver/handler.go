@@ -1,8 +1,11 @@
 package driver
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
+	"github.com/tangx/dnsx/pkg/httpserver/response"
 )
 
 func Create(c *gin.Context) {
@@ -12,16 +15,15 @@ func Create(c *gin.Context) {
 		logrus.Errorf("bind driver failed: %v", err)
 	}
 
-	tx := db.Create(&driver)
-	if tx.RowsAffected == 1 {
-		// todo: gin render ok
-		c.String(200, "driver record insert success")
+	result := db.Create(&driver)
+	if result.RowsAffected == 1 {
+		msg := "Insert driver record success"
+		response.RespOK(c, msg)
 		return
 	}
 
-	if err := tx.Error; err != nil {
-		logrus.Errorf("dirver insert failed: %v", err)
-		// todo: gin render 50x
+	if err := result.Error; err != nil {
+		response.RespInternalServerError(c, 500, err)
 		return
 	}
 }
@@ -31,23 +33,13 @@ func GetDriverByName(c *gin.Context) {
 	name := c.Param("driver")
 	driver, err := getDriverByName(name)
 	if err != nil {
-		// todo: gin render 50x not found
+		errMsg := fmt.Errorf("get record failed: %v", err)
+		response.RespInternalServerError(c, 500, errMsg)
 		return
 	}
 
-	c.JSON(200, driver)
+	response.RespOK(c, driver)
 
-}
-
-func getDriverByName(name string) (*Driver, error) {
-	driver := &Driver{}
-	ret := db.First(driver, "name = ?", name)
-
-	if ret.Error != nil {
-		return nil, ret.Error
-	}
-
-	return driver, nil
 }
 
 func DeleteDriverByName(c *gin.Context) {
@@ -55,26 +47,10 @@ func DeleteDriverByName(c *gin.Context) {
 	err := deleteDriverByName(name)
 
 	if err != nil {
-		c.String(500, err.Error())
+		errMsg := fmt.Errorf("delete record failed: %v", err)
+		response.RespInternalServerError(c, 500, errMsg)
 		return
 	}
 
-	// todo: render ok
-	c.String(201, "delete ok")
-
-}
-
-func deleteDriverByName(name string) error {
-	driver, err := getDriverByName(name)
-	if err != nil {
-		return nil
-	}
-
-	ret := db.Unscoped().Delete(driver)
-	if ret.Error != nil {
-		return ret.Error
-	}
-
-	return nil
-
+	response.RespOK(c, "delete recode success")
 }
