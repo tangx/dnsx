@@ -1,0 +1,16 @@
+### Create Driver
+POST http://127.0.0.1:12345/dnsx/v0/dirver
+Content-Type: application/json
+
+{
+    "name":"aliyun",
+    "comment":"aliyun alidns"
+}
+
+
+### GET driver by name
+GET http://127.0.0.1:12345/dnsx/v0/dirver/aliyun
+
+
+### DELETE driver by name
+DELETE http://127.0.0.1:12345/dnsx/v0/dirver/aliyun
