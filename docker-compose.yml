@@ -7,5 +7,6 @@ services:
     ports:
       - 5432:5432
     environment:
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Abc123123
     network_mode: default

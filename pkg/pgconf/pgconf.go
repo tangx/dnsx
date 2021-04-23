@@ -19,6 +19,7 @@ type Postgres struct {
 
 // Conn 连接数据库
 func (pg *Postgres) Conn() *gorm.DB {
+	pg.SetDefaults()
 
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=%s TimeZone=Asia/Shanghai",
 		pg.Addr,
@@ -42,4 +43,15 @@ func (pg *Postgres) sslmode() string {
 		return "enable"
 	}
 	return "disable"
+}
+
+func (pg *Postgres) SetDefaults() {
+	if pg.Addr == "" {
+		pg.Addr = "localhost"
+	}
+
+	if pg.Port == 0 {
+		pg.Port = 5432
+	}
+
 }
