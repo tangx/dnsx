@@ -64,7 +64,7 @@ func (dnsx DNSxConfig) Dump(cfgFile string) {
 		panic(err)
 	}
 
-	f.WriteString(dnsx.Marshal())
+	_, _ = f.WriteString(dnsx.Marshal())
 }
 
 // New 新建 配置文件

@@ -59,12 +59,12 @@ func (cli Client) GetRecords(domain, record string) (RRs []backend.RecordItem) {
 			}
 
 			RRs = append(RRs, backend.RecordItem{
-				strconv.Itoa(rr.Id),
-				rr.Name,
-				rr.Type,
-				rr.Value,
-				Status,
-				rr.UpdatedOn,
+				ID:       strconv.Itoa(rr.Id),
+				Name:     rr.Name,
+				Type:     rr.Type,
+				Value:    rr.Value,
+				Status:   Status,
+				UpdateOn: rr.UpdatedOn,
 			})
 		}
 	}

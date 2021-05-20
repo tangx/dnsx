@@ -106,12 +106,12 @@ func AddProfile() {
 	}
 
 	if item.Provider == "aliyun" || item.Provider == "qcloud" {
-		survey.Ask(qsLoginWithKey, &item)
+		_ = survey.Ask(qsLoginWithKey, &item)
 	}
 
 	var confirm bool = false
 
-	survey.AskOne(&survey.Confirm{
+	_ = survey.AskOne(&survey.Confirm{
 		Message: fmt.Sprintf("是否添加 %s 到配置中", global.Profile),
 	}, &confirm,
 	)
@@ -137,7 +137,7 @@ func DeleteProfile() {
 	fmt.Println(profiles)
 
 	var profile string
-	survey.AskOne(
+	_ = survey.AskOne(
 		&survey.Select{
 			Message: "选择需要删除的 Profile",
 			Options: profiles,
@@ -148,7 +148,7 @@ func DeleteProfile() {
 	fmt.Println(profile)
 
 	confirm := false
-	survey.AskOne(
+	_ = survey.AskOne(
 		&survey.Confirm{Message: fmt.Sprintf("确认删除 %s ？", profile)},
 		&confirm,
 	)
@@ -169,7 +169,7 @@ func SetCurrent() {
 	dnsx := global.Load()
 
 	if _, ok := dnsx.Items[global.Profile]; !ok {
-		logrus.Fatal("Profile(%s) 不存在")
+		logrus.Fatalf("Profile(%s) 不存在", global.Profile)
 	}
 	dnsx.Current = global.Profile
 

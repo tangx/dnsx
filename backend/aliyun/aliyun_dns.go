@@ -39,14 +39,15 @@ func (cli Client) GetRecords(domain, record string) (RRs []backend.RecordItem) {
 	}
 
 	for _, rr := range respInfo.DomainRecords.Record {
-		RRs = append(RRs, backend.RecordItem{
-			rr.RecordId,
-			rr.RR,
-			rr.Type,
-			rr.Value,
-			rr.Status,
-			"", // aliyun 没有记录解析修改时间
-		})
+		item := backend.RecordItem{
+			ID:       rr.RecordId,
+			Name:     rr.RR,
+			Type:     rr.Type,
+			Value:    rr.Value,
+			Status:   rr.Status,
+			UpdateOn: "", // aliyun 没有记录解析修改时间
+		}
+		RRs = append(RRs, item)
 	}
 
 	return

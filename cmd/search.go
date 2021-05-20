@@ -3,8 +3,6 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"os"
-	"text/template"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -40,16 +38,6 @@ func GetRecords(args []string) {
 	RRs := IClient.GetRecords(domain, record)
 
 	dumpByPrintf(RRs)
-}
-
-func dumpByTemplate(RRs []backend.RecordItem) {
-
-	tepl := `{{range .}}{{.ID}} {{.Name}} {{.Type}} {{.Value}} {{.Status}} {{ .UpdateOn }}
-{{end}}`
-
-	tmpl, _ := template.New("records").Parse(tepl)
-	tmpl.Execute(os.Stdout, RRs)
-
 }
 
 func dumpByPrintf(RRs []backend.RecordItem) {

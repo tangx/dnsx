@@ -85,14 +85,14 @@ func DeleteRecord(args []string) {
 	}
 
 	// 选择需要删除的记录对象
-	survey.AskOne(QsRecordMultiSelect, &QsRecordAnswers)
+	_ = survey.AskOne(QsRecordMultiSelect, &QsRecordAnswers)
 	if len(QsRecordAnswers) == 0 {
 		logrus.Info("用户取消 或 没有选择删除对象")
 		return
 	}
 
 	// 确认删除
-	survey.AskOne(QsMakeSure, &Confirm)
+	_ = survey.AskOne(QsMakeSure, &Confirm)
 	if !Confirm {
 		logrus.Infof("用户取消操作\n")
 	}
