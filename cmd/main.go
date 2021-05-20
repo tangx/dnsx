@@ -10,15 +10,19 @@ import (
 	"github.com/tangx/dnsx/backend/aliyun"
 	"github.com/tangx/dnsx/backend/qcloud"
 	"github.com/tangx/dnsx/global"
+	"github.com/tangx/dnsx/version"
 )
 
 // configureCmd represents the configure command
 var rootCmd = &cobra.Command{
 	Use:   "dnsx",
 	Short: "DNSx 配置管理 DNS 解析",
-	// Run: func(cmd *cobra.Command, args []string) {
-	// 	fmt.Println("configure called")
-	// },
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		fmt.Println("version: " + version.Version)
+	},
+	Run: func(cmd *cobra.Command, args []string) {
+		_ = cmd.Help()
+	},
 }
 
 func init() {

@@ -32,12 +32,13 @@ jobs:
       run: env
 
     - name: Build Binary
-      run: /bin/bash build.sh
+      run: make buildx
     
     - uses: "marvinpinto/action-automatic-releases@latest"
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         prerelease: false
         files: |
+          dnsx.completion.bash
           docs/config.json
           bin/*
