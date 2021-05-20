@@ -1,9 +1,12 @@
-# ChangeLog
+# Change Log
 
-## v1.0.2 
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-1. 发布 `dnsx.completion.bash` 补全文件
-2. 调整 `dnsx add domain record type value` 为 `dnsx add type domain record value`
+
+
+# [1.0.4](https://github.com/tangx/dnsx/compare/v1.0.3...v1.0.4)
+
 
 ## v1.0.1
 
