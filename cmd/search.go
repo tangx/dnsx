@@ -2,8 +2,9 @@ package cmd
 
 import (
 	"errors"
-	"fmt"
+	"os"
 
+	"github.com/olekukonko/tablewriter"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/tangx/dnsx/backend"
@@ -37,22 +38,21 @@ func GetRecords(args []string) {
 
 	RRs := IClient.GetRecords(domain, record)
 
-	dumpByPrintf(RRs)
+	// dumpByPrintf(RRs)
+	tableWriter(RRs)
 }
 
-func dumpByPrintf(RRs []backend.RecordItem) {
+func tableWriter(RRs []backend.RecordItem) {
 
-	// 彩色输出
-	// https://blog.csdn.net/w616589292/article/details/51078787
-	// colorFormat := "%c[1;31;41m%-20s %-20s %-8s %-20s %-10s%c[0m\n"
+	table := tablewriter.NewWriter(os.Stdout)
 
-	format := "%-15s %-20s %-8s %-20s %-10s %-10s\n"
+	table.SetHeader([]string{"RecordID", "Record", "Type", "Value", "Status", "Last Update Time"})
 
-	fmt.Println("")
-	fmt.Printf(format, "RecordID", "Record", "Type", "Value", "Status", "Last Update Time")
-	fmt.Println("")
+	// table.Append([]string{})
+
 	for _, rr := range RRs {
-		fmt.Printf(format, rr.ID, rr.Name, rr.Type, rr.Value, rr.Status, rr.UpdateOn)
+		table.Append([]string{rr.ID, rr.Name, rr.Type, rr.Value, rr.Status, rr.UpdateOn})
 	}
-	fmt.Println("")
+
+	table.Render()
 }
