@@ -5,7 +5,11 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+# [1.0.5](https://github.com/tangx/dnsx/compare/v1.0.4...v1.0.5)
+
+
 # [1.0.4](https://github.com/tangx/dnsx/compare/v1.0.3...v1.0.4)
+
 
 
 ## v1.0.1
