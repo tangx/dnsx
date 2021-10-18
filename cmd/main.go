@@ -68,9 +68,9 @@ func GetClient() (iClient Client) {
 	// fmt.Println(item)
 	switch item.Provider {
 	case "aliyun":
-		iClient = aliyun.Client{AKID: item.AKID, AKEY: item.AKEY}
+		iClient = aliyun.NewClient(item.AKID, item.AKEY)
 	case "qcloud":
-		iClient = qcloud.Client{AKID: item.AKID, AKEY: item.AKEY}
+		iClient = qcloud.NewClient(item.AKID, item.AKEY)
 	default:
 		logrus.Fatalf("Provider(%s) : 不支持 DNS 供应商", item.Provider)
 	}

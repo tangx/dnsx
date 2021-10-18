@@ -10,15 +10,31 @@ import (
 
 // Client 阿里云 DNS
 type Client struct {
-	AKID string `json:"akid"`
-	AKEY string `json:"akey"`
+	AKID  string `json:"akid"`
+	AKEY  string `json:"akey"`
+	agent *alidns.Client
+}
+
+func NewClient(akid, akey string) *Client {
+	c := &Client{
+		AKID: akid,
+		AKEY: akey,
+	}
+
+	c.initial()
+	return c
+}
+
+func (cli *Client) initial() {
+	if cli.agent == nil {
+		cli.agent = alidns.New(cli.AKID, cli.AKEY)
+	}
 }
 
 // AddRecord 增加解析记录
-func (cli Client) AddRecord(domain, record, rrType, Value string) (recordID string) {
-	aliyundns := alidns.New(cli.AKID, cli.AKEY)
+func (cli *Client) AddRecord(domain, record, rrType, Value string) (recordID string) {
 
-	respBody, errBody, err := aliyundns.AddDomainRecord(domain, record, rrType, Value, nil)
+	respBody, errBody, err := cli.agent.AddDomainRecord(domain, record, rrType, Value, nil)
 	if err != nil {
 		errBytes, _ := json.Marshal(errBody)
 		logrus.Fatalf("%s", errBytes)
@@ -28,12 +44,11 @@ func (cli Client) AddRecord(domain, record, rrType, Value string) (recordID stri
 }
 
 // GetRecords 查询 DNS 解析记录
-func (cli Client) GetRecords(domain, record string) (RRs []backend.RecordItem) {
-	aliyundns := alidns.New(cli.AKID, cli.AKEY)
+func (cli *Client) GetRecords(domain, record string) (RRs []backend.RecordItem) {
 
 	reqBody := map[string]string{"RRKeyWord": record, "PageSize": "500"}
 
-	respInfo, errBody, err := aliyundns.DescribeDomainRecords(domain, reqBody)
+	respInfo, errBody, err := cli.agent.DescribeDomainRecords(domain, reqBody)
 	if err != nil {
 		logrus.Fatalln(errBody)
 	}
@@ -54,9 +69,8 @@ func (cli Client) GetRecords(domain, record string) (RRs []backend.RecordItem) {
 }
 
 // DeleteRecord 删除域名解析记录
-func (cli Client) DeleteRecord(domain string, id string) string {
-	aliyundns := alidns.New(cli.AKID, cli.AKEY)
-	respBody, errBody, err := aliyundns.DeleteDomainRecord(id)
+func (cli *Client) DeleteRecord(domain string, id string) string {
+	respBody, errBody, err := cli.agent.DeleteDomainRecord(id)
 	if err != nil {
 		logrus.Errorf("%s : %s", errBody.RequestID, errBody.Message)
 	}
@@ -64,10 +78,9 @@ func (cli Client) DeleteRecord(domain string, id string) string {
 	return respBody.RecordId
 }
 
-func (cli Client) SetRecordStatus(domain string, recordID string, status bool) string {
-	aliyundns := alidns.New(cli.AKID, cli.AKEY)
+func (cli *Client) SetRecordStatus(domain string, recordID string, status bool) string {
 
-	respBody, errBody, err := aliyundns.SetDomainRecordStatus(recordID, status)
+	respBody, errBody, err := cli.agent.SetDomainRecordStatus(recordID, status)
 	if err != nil {
 		logrus.Errorf("%s : %s", errBody.RequestID, errBody.Message)
 	}
