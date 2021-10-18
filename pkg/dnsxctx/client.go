@@ -5,7 +5,6 @@ import (
 	"github.com/tangx/dnsx/backend"
 	"github.com/tangx/dnsx/backend/aliyun"
 	"github.com/tangx/dnsx/backend/qcloud"
-	"github.com/tangx/dnsx/global"
 )
 
 // DnsxClient for dnsx
@@ -17,14 +16,14 @@ type DnsxClient interface {
 }
 
 // NewClient 根据 Provider 返回相应 DNS 客户端
-func NewClient(config DnsxConfig) DnsxClient {
+func NewClient(profile string, config DnsxConfig) DnsxClient {
 
-	item := config.Items[config.Current]
-	if global.Profile != "default" {
-		item = config.Items[global.Profile]
+	if profile == "default" {
+		profile = config.Current
 	}
 
-	// fmt.Println(item)
+	item := config.Items[profile]
+
 	switch item.Provider {
 	case "aliyun":
 		return aliyun.NewClient(item.AKID, item.AKEY)

@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 
 	"github.com/spf13/cobra"
-	"github.com/tangx/dnsx/global"
+	"github.com/tangx/dnsx/internal/global"
 	"github.com/tangx/dnsx/pkg/dnsxctx"
 	"github.com/tangx/dnsx/version"
 )
@@ -23,7 +23,7 @@ var rootCmd = &cobra.Command{
 		convertConfigPath()
 
 		config = dnsxctx.NewConfig(global.CfgFile)
-		dnsx = dnsxctx.NewClient(config)
+		dnsx = dnsxctx.NewClient(global.Profile, config)
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		_ = cmd.Help()

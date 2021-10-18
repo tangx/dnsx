@@ -7,7 +7,8 @@ import (
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/tangx/dnsx/global"
+
+	"github.com/tangx/dnsx/internal/global"
 	"github.com/tangx/dnsx/pkg/dnsxctx"
 )
 
