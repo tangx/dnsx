@@ -14,6 +14,9 @@ import (
 var configureCmd = &cobra.Command{
 	Use:   "configure",
 	Short: "管理配置文件",
+	// PersistentPreRun: func(cmd *cobra.Command, args []string) {
+	// 	config = global.Load()
+	// },
 	// Run: func(cmd *cobra.Command, args []string) {
 	// 	ConfigureMain()
 	// },
@@ -127,7 +130,6 @@ func AddProfile() {
 
 // DeleteProfile 删除
 func DeleteProfile() {
-	config := global.Load()
 
 	var profiles []string
 	for k := range config.Items {
@@ -166,7 +168,6 @@ func DeleteProfile() {
 
 // SetCurrent 配置默认 Profile
 func SetCurrent() {
-	config := global.Load()
 
 	if _, ok := config.Items[global.Profile]; !ok {
 		logrus.Fatalf("Profile(%s) 不存在", global.Profile)
@@ -178,7 +179,6 @@ func SetCurrent() {
 
 // ListProfile 返回当前 config 中的所有 profile
 func ListProfile() {
-	config := global.Load()
 	var l []string
 	for key := range config.Items {
 		l = append(l, key)
@@ -189,7 +189,6 @@ func ListProfile() {
 
 // Domains 返回当前 profile 中的所有 domain
 func Domains() {
-	config := global.Load()
 
 	var p string
 	if global.Profile == "default" {

@@ -13,12 +13,17 @@ import (
 	"github.com/tangx/dnsx/version"
 )
 
+var dnsx DnsxClient
+var config global.DnsxConfig
+
 // configureCmd represents the configure command
 var rootCmd = &cobra.Command{
 	Use:   "dnsx",
 	Short: "DNSx 配置管理 DNS 解析",
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		fmt.Println("version: " + version.Version)
+		config = global.Load()
+		dnsx = getClient(config)
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		_ = cmd.Help()
@@ -54,15 +59,14 @@ type DnsxClient interface {
 }
 
 // getClient 根据 Provider 返回相应 DNS 客户端
-func getClient() (iClient DnsxClient) {
-	// var iClient Client
-	dnsx := global.Load()
+func getClient(config global.DnsxConfig) (iClient DnsxClient) {
+
 	var item global.DnsxConfigItem
 
 	if global.Profile == "default" {
-		item = dnsx.Items[dnsx.Current]
+		item = config.Items[config.Current]
 	} else {
-		item = dnsx.Items[global.Profile]
+		item = config.Items[global.Profile]
 	}
 
 	// fmt.Println(item)
@@ -76,10 +80,4 @@ func getClient() (iClient DnsxClient) {
 	}
 
 	return
-}
-
-var dnsx DnsxClient
-
-func init() {
-	dnsx = getClient()
 }
