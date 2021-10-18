@@ -15,12 +15,14 @@ import (
 var configureCmd = &cobra.Command{
 	Use:   "configure",
 	Short: "管理配置文件",
-	// PersistentPreRun: func(cmd *cobra.Command, args []string) {
-	// 	config = global.Load()
-	// },
-	// Run: func(cmd *cobra.Command, args []string) {
-	// 	ConfigureMain()
-	// },
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		convertConfigPath()
+
+		config = dnsxctx.Load(global.CfgFile)
+	},
+	Run: func(cmd *cobra.Command, args []string) {
+		_ = cmd.Help()
+	},
 }
 
 var configureDomainsCmd = &cobra.Command{
@@ -40,10 +42,12 @@ var configureListCmd = &cobra.Command{
 }
 
 var configureAddCmd = &cobra.Command{
-	Use:   "add",
+	Use:   "append",
 	Short: "向 Config 中增加 profile",
 	Run: func(cmd *cobra.Command, args []string) {
 		AddProfile()
+		// _ = cmd.Help()
+		// fmt.Println("123123123123")
 	},
 }
 var configureDeleteCmd = &cobra.Command{

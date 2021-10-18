@@ -3,27 +3,27 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
-	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/tangx/dnsx/backend"
-	"github.com/tangx/dnsx/backend/aliyun"
-	"github.com/tangx/dnsx/backend/qcloud"
 	"github.com/tangx/dnsx/global"
+	"github.com/tangx/dnsx/pkg/dnsxctx"
 	"github.com/tangx/dnsx/version"
 )
 
-var dnsx DnsxClient
-var config global.DnsxConfig
+var dnsx dnsxctx.DnsxClient
+var config dnsxctx.DnsxConfig
 
 // configureCmd represents the configure command
 var rootCmd = &cobra.Command{
-	Use:   "dnsx",
-	Short: "DNSx 配置管理 DNS 解析",
+	Use: "dnsx",
+	Short: fmt.Sprintf(`DNSx 配置管理 DNS 解析
+	version: %s`, version.Version),
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		fmt.Println("version: " + version.Version)
-		config = global.Load()
-		dnsx = getClient(config)
+		convertConfigPath()
+
+		config = dnsxctx.Load(global.CfgFile)
+		dnsx = dnsxctx.NewClient(config)
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		_ = cmd.Help()
@@ -50,34 +50,8 @@ func Execute() {
 	}
 }
 
-// DnsxClient for dnsx
-type DnsxClient interface {
-	AddRecord(domain, record, rrType, Value string) (recordID string)
-	GetRecords(domain, record string) (RRs []backend.RecordItem)
-	DeleteRecord(domain, recordID string) string
-	SetRecordStatus(domain string, recordID string, status bool) string
-}
-
-// getClient 根据 Provider 返回相应 DNS 客户端
-func getClient(config global.DnsxConfig) (iClient DnsxClient) {
-
-	var item global.DnsxConfigItem
-
-	if global.Profile == "default" {
-		item = config.Items[config.Current]
-	} else {
-		item = config.Items[global.Profile]
+func convertConfigPath() {
+	if global.CfgFile == "" || global.CfgFile == "$HOME/.dnsx/dnsx.json" {
+		global.CfgFile = filepath.Join(os.Getenv("HOME"), ".dnsx/dnsx.json")
 	}
-
-	// fmt.Println(item)
-	switch item.Provider {
-	case "aliyun":
-		iClient = aliyun.NewClient(item.AKID, item.AKEY)
-	case "qcloud":
-		iClient = qcloud.NewClient(item.AKID, item.AKEY)
-	default:
-		logrus.Fatalf("Provider(%s) : 不支持 DNS 供应商", item.Provider)
-	}
-
-	return
 }

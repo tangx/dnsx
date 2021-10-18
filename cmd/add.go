@@ -19,6 +19,7 @@ var addCmd = &cobra.Command{
 			logrus.Fatalln(Usage)
 			// logrus.Fatalln("参数不低于4")
 		}
+
 		AddRecord(args)
 	},
 }
