@@ -13,14 +13,30 @@ import (
 
 // Client 腾讯云 DNS
 type Client struct {
-	AKID string
-	AKEY string
+	AKID  string
+	AKEY  string
+	agent *cns.Client
+}
+
+func NewClient(akid, akey string) *Client {
+	c := &Client{
+		AKID: akid,
+		AKEY: akey,
+	}
+
+	c.initial()
+	return c
+}
+
+func (cli *Client) initial() {
+	if cli.agent == nil {
+		cli.agent = cns.New(cli.AKID, cli.AKEY)
+	}
 }
 
 // AddRecord 添加解析记录
-func (cli Client) AddRecord(domain, rr, rrType, rrValue string) (recordID string) {
-	qcns := cns.New(cli.AKID, cli.AKEY)
-	id, err := qcns.RecordCreate(
+func (cli *Client) AddRecord(domain, rr, rrType, rrValue string) (recordID string) {
+	id, err := cli.agent.RecordCreate(
 		domain,
 		cns.Record{
 			Name:  rr,
@@ -36,9 +52,8 @@ func (cli Client) AddRecord(domain, rr, rrType, rrValue string) (recordID string
 }
 
 // GetRecords 查询 DNS 解析记录
-func (cli Client) GetRecords(domain, record string) (RRs []backend.RecordItem) {
-	qcns := cns.New(cli.AKID, cli.AKEY)
-	records, err := qcns.RecordList(domain)
+func (cli *Client) GetRecords(domain, record string) (RRs []backend.RecordItem) {
+	records, err := cli.agent.RecordList(domain)
 	if err != nil {
 		logrus.Fatalln(err)
 	}
@@ -73,22 +88,20 @@ func (cli Client) GetRecords(domain, record string) (RRs []backend.RecordItem) {
 }
 
 // DeleteRecord 删除解析记录
-func (cli Client) DeleteRecord(domain string, recordID string) string {
-	qcns := cns.New(cli.AKID, cli.AKEY)
+func (cli *Client) DeleteRecord(domain string, recordID string) string {
 
 	id, _ := strconv.Atoi(recordID)
-	err := qcns.RecordDelete(domain, id)
+	err := cli.agent.RecordDelete(domain, id)
 	if err != nil {
 		logrus.Errorf("%s", err)
 	}
 	return recordID
 }
 
-func (cli Client) SetRecordStatus(domain string, recordID string, status bool) string {
-	qcns := cns.New(cli.AKID, cli.AKEY)
+func (cli *Client) SetRecordStatus(domain string, recordID string, status bool) string {
 
 	rID, _ := strconv.Atoi(recordID)
-	err := qcns.RecordStatus(domain, rID, status)
+	err := cli.agent.RecordStatus(domain, rID, status)
 	if err != nil {
 		logrus.Errorf("%s", err)
 	}

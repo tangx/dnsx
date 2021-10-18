@@ -39,8 +39,7 @@ func SwitchRecordStatus(args []string) {
 		pattern = args[1]
 	}
 
-	IClient := GetClient()
-	Records := IClient.GetRecords(domain, pattern)
+	Records := dnsx.GetRecords(domain, pattern)
 
 	if len(Records) == 0 {
 		logrus.Infof("没有匹配的解析记录")
@@ -84,7 +83,7 @@ func SwitchRecordStatus(args []string) {
 
 	for _, answer := range QsRecordAnswers {
 		rrID := strings.Split(answer, ":")[0]
-		result := IClient.SetRecordStatus(domain, rrID, status)
+		result := dnsx.SetRecordStatus(domain, rrID, status)
 		fmt.Printf("解析记录 %s 状态被设置为 %s\n", result, QsRecordStatusAnswer)
 	}
 }

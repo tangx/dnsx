@@ -19,6 +19,7 @@ var addCmd = &cobra.Command{
 			logrus.Fatalln(Usage)
 			// logrus.Fatalln("参数不低于4")
 		}
+
 		AddRecord(args)
 	},
 }
@@ -29,15 +30,14 @@ func init() {
 // AddRecord 添加域名解析记录
 func AddRecord(args []string) {
 
-	IClient := GetClient()
-
 	// domain, record, rrType, value := args[0:4]
 
 	recordType := strings.ToUpper(args[0])
 	domain := args[1]
 	record := args[2]
 	value := args[3]
-	RecordID := IClient.AddRecord(domain, record, recordType, value)
+
+	RecordID := dnsx.AddRecord(domain, record, recordType, value)
 
 	if RecordID != "" {
 		logrus.Infof("Success:[%s] %s.%s (%s) %s ", RecordID, record, domain, recordType, value)

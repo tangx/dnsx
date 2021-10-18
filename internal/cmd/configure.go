@@ -7,16 +7,23 @@ import (
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/tangx/dnsx/global"
+
+	"github.com/tangx/dnsx/internal/global"
+	"github.com/tangx/dnsx/pkg/dnsxctx"
 )
 
 // configureCmd represents the configure command
 var configureCmd = &cobra.Command{
 	Use:   "configure",
 	Short: "管理配置文件",
-	// Run: func(cmd *cobra.Command, args []string) {
-	// 	ConfigureMain()
-	// },
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		convertConfigPath()
+
+		config = dnsxctx.NewConfig(global.CfgFile)
+	},
+	Run: func(cmd *cobra.Command, args []string) {
+		_ = cmd.Help()
+	},
 }
 
 var configureDomainsCmd = &cobra.Command{
@@ -36,10 +43,12 @@ var configureListCmd = &cobra.Command{
 }
 
 var configureAddCmd = &cobra.Command{
-	Use:   "add",
+	Use:   "append",
 	Short: "向 Config 中增加 profile",
 	Run: func(cmd *cobra.Command, args []string) {
 		AddProfile()
+		// _ = cmd.Help()
+		// fmt.Println("123123123123")
 	},
 }
 var configureDeleteCmd = &cobra.Command{
@@ -68,8 +77,7 @@ func init() {
 
 // AddProfile 增加
 func AddProfile() {
-	dnsx := global.Load()
-	var item global.DNSxConfigItem
+	var item dnsxctx.DnsxConfigItem
 
 	var qsProvider = []*survey.Question{
 		{
@@ -117,8 +125,8 @@ func AddProfile() {
 	)
 
 	if confirm {
-		dnsx.Items[global.Profile] = item
-		dnsx.Dump(global.CfgFile)
+		config.Items[global.Profile] = item
+		config.Dump(global.CfgFile)
 	} else {
 		logrus.Infoln("用户取消添加")
 	}
@@ -127,10 +135,9 @@ func AddProfile() {
 
 // DeleteProfile 删除
 func DeleteProfile() {
-	dnsx := global.Load()
 
 	var profiles []string
-	for k := range dnsx.Items {
+	for k := range config.Items {
 		profiles = append(profiles, k)
 	}
 
@@ -154,9 +161,9 @@ func DeleteProfile() {
 	)
 
 	if confirm {
-		dnsx.Delete(profile)
+		config.Delete(profile)
 
-		dnsx.Dump(global.CfgFile)
+		config.Dump(global.CfgFile)
 		logrus.Infof("已删除 Profile(%s)", profile)
 	} else {
 		logrus.Infof("用户取消删除 Profile(%s)", profile)
@@ -166,21 +173,19 @@ func DeleteProfile() {
 
 // SetCurrent 配置默认 Profile
 func SetCurrent() {
-	dnsx := global.Load()
 
-	if _, ok := dnsx.Items[global.Profile]; !ok {
+	if _, ok := config.Items[global.Profile]; !ok {
 		logrus.Fatalf("Profile(%s) 不存在", global.Profile)
 	}
-	dnsx.Current = global.Profile
+	config.Current = global.Profile
 
-	dnsx.Dump(global.CfgFile)
+	config.Dump(global.CfgFile)
 }
 
 // ListProfile 返回当前 config 中的所有 profile
 func ListProfile() {
-	dnsx := global.Load()
 	var l []string
-	for key := range dnsx.Items {
+	for key := range config.Items {
 		l = append(l, key)
 	}
 
@@ -189,14 +194,13 @@ func ListProfile() {
 
 // Domains 返回当前 profile 中的所有 domain
 func Domains() {
-	dnsx := global.Load()
 
 	var p string
 	if global.Profile == "default" {
-		p = dnsx.Current
+		p = config.Current
 	} else {
 		p = global.Profile
 	}
-	item := dnsx.Items[p]
+	item := config.Items[p]
 	fmt.Println(strings.Join(item.Domains, " "))
 }
