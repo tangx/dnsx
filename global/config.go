@@ -2,9 +2,9 @@ package global
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 )
 
 // Providers DNS 解析供应商
@@ -42,7 +42,7 @@ type DnsxConfigItem struct {
 // Load 加载配置文件
 func Load() (dnsx DnsxConfig) {
 	if CfgFile == "" || CfgFile == "$HOME/.dnsx/dnsx.json" {
-		CfgFile = fmt.Sprintf("%s/.dnsx/dnsx.json", os.Getenv("HOME"))
+		CfgFile = filepath.Join(os.Getenv("HOME"), ".dnsx/dnsx.json")
 	}
 	data, err := ioutil.ReadFile(CfgFile)
 	if err != nil {
