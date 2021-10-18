@@ -28,8 +28,8 @@ type DnsxConfigItem struct {
 	Region string `json:"region,omitempty"`
 }
 
-// Load 加载配置文件
-func Load(cfg string) (config DnsxConfig) {
+// NewConfig 加载配置文件
+func NewConfig(cfg string) (config DnsxConfig) {
 
 	data, err := ioutil.ReadFile(cfg)
 	if err != nil {

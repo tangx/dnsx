@@ -22,7 +22,7 @@ var rootCmd = &cobra.Command{
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		convertConfigPath()
 
-		config = dnsxctx.Load(global.CfgFile)
+		config = dnsxctx.NewConfig(global.CfgFile)
 		dnsx = dnsxctx.NewClient(config)
 	},
 	Run: func(cmd *cobra.Command, args []string) {

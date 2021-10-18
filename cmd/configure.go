@@ -18,7 +18,7 @@ var configureCmd = &cobra.Command{
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		convertConfigPath()
 
-		config = dnsxctx.Load(global.CfgFile)
+		config = dnsxctx.NewConfig(global.CfgFile)
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		_ = cmd.Help()
