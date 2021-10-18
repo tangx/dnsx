@@ -40,7 +40,7 @@ type DnsxConfigItem struct {
 }
 
 // Load 加载配置文件
-func Load() (dnsx DnsxConfig) {
+func Load() (config DnsxConfig) {
 	if CfgFile == "" || CfgFile == "$HOME/.dnsx/dnsx.json" {
 		CfgFile = filepath.Join(os.Getenv("HOME"), ".dnsx/dnsx.json")
 	}
@@ -49,7 +49,7 @@ func Load() (dnsx DnsxConfig) {
 		panic(err)
 	}
 
-	err = json.Unmarshal(data, &dnsx)
+	err = json.Unmarshal(data, &config)
 	if err != nil {
 		panic(err)
 	}
@@ -58,23 +58,23 @@ func Load() (dnsx DnsxConfig) {
 }
 
 // Dump 写入配置文件
-func (dnsx DnsxConfig) Dump(cfgFile string) {
+func (config DnsxConfig) Dump(cfgFile string) {
 	f, err := os.OpenFile(cfgFile, os.O_CREATE|os.O_TRUNC|os.O_RDWR, 0700)
 	if err != nil {
 		panic(err)
 	}
 
-	_, _ = f.WriteString(dnsx.Marshal())
+	_, _ = f.WriteString(config.Marshal())
 }
 
 // New 新建 配置文件
 // 这里应该使用 template 完成
-func (dnsx DnsxConfig) New(cfgFile string) {}
+func (config DnsxConfig) New(cfgFile string) {}
 
 // Marshal 格式化配置文件
-func (dnsx DnsxConfig) Marshal() (s string) {
+func (config DnsxConfig) Marshal() (s string) {
 
-	b, err := json.MarshalIndent(dnsx, "", "  ")
+	b, err := json.MarshalIndent(config, "", "  ")
 	if err != nil {
 		panic(err)
 	}
@@ -83,10 +83,9 @@ func (dnsx DnsxConfig) Marshal() (s string) {
 }
 
 // Add 增加 Profile
-func (dnsx DnsxConfig) Add(profile string, item DnsxConfigItem) {}
+func (config DnsxConfig) Add(profile string, item DnsxConfigItem) {}
 
 // Delete 删除 Profile
-func (dnsx *DnsxConfig) Delete(profile string) {
-	delete(dnsx.Items, profile)
-
+func (config *DnsxConfig) Delete(profile string) {
+	delete(config.Items, profile)
 }
