@@ -5,7 +5,28 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+# [1.1.0](https://github.com/tangx/dnsx/compare/v1.0.5...v1.1.0)
+
+### Bug Fixes
+
+* **fix** github ci ([78d5aa7](https://github.com/tangx/dnsx/commit/78d5aa7fa0f5c30a56d74f65cdf52594a255b6b2))
+* **fix** 清理 configure 管理中的 config 获取 ([f37b8e5](https://github.com/tangx/dnsx/commit/f37b8e5b41929c7c883a2e44185b654e6dcc990b))
+* **fix** rename 变量 ([07479bd](https://github.com/tangx/dnsx/commit/07479bda7d54290d823e3e7b5310ad50d9033549))
+* **fix** 修改配置文件读取 ([9b75d37](https://github.com/tangx/dnsx/commit/9b75d373e82c91e064ce49f8156bdd37e2aec251))
+* **fix** rename config ([e0e1453](https://github.com/tangx/dnsx/commit/e0e14533a7672d8aa7d986f94ffe39fb6922ff61))
+
+
+### Features
+
+* **feat** filepath join ([9948791](https://github.com/tangx/dnsx/commit/994879132f129af47e7aebbe8dcdf89d7bef8329))
+* **feat** init 初始化 dnsx client 代替每个操作自己创建 ([e425ffe](https://github.com/tangx/dnsx/commit/e425ffe3f9e85f96ef1e476330f445a30014313a))
+* **feat** struct 对象改名 ([5011035](https://github.com/tangx/dnsx/commit/5011035f3df73710c5e2c5835cc08d6212065830))
+* **feat** 删除每个请求都 New client ([fe3fc14](https://github.com/tangx/dnsx/commit/fe3fc142c1de3e091cfc217e0ac5e8cccd8d9d84))
+
+
+
 # [1.0.5](https://github.com/tangx/dnsx/compare/v1.0.4...v1.0.5)
+
 
 
 # [1.0.4](https://github.com/tangx/dnsx/compare/v1.0.3...v1.0.4)
