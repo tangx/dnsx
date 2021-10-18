@@ -17,15 +17,15 @@ var (
 	Profile string
 )
 
-// DNSxConfig 配置文件信息
-type DNSxConfig struct {
+// DnsxConfig 配置文件信息
+type DnsxConfig struct {
 	// Current 当前默认的 Profile 选项
 	Current string                    `json:"current"`
-	Items   map[string]DNSxConfigItem `json:"items"`
+	Items   map[string]DnsxConfigItem `json:"items"`
 }
 
-// DNSxConfigItem 具体变量信息
-type DNSxConfigItem struct {
+// DnsxConfigItem 具体变量信息
+type DnsxConfigItem struct {
 	AKID     string   `json:"akid,omitempty"`
 	AKEY     string   `json:"akey,omitempty"`
 	Provider string   `json:"provider,omitempty"`
@@ -40,7 +40,7 @@ type DNSxConfigItem struct {
 }
 
 // Load 加载配置文件
-func Load() (dnsx DNSxConfig) {
+func Load() (dnsx DnsxConfig) {
 	if CfgFile == "" || CfgFile == "$HOME/.dnsx/dnsx.json" {
 		CfgFile = fmt.Sprintf("%s/.dnsx/dnsx.json", os.Getenv("HOME"))
 	}
@@ -58,7 +58,7 @@ func Load() (dnsx DNSxConfig) {
 }
 
 // Dump 写入配置文件
-func (dnsx DNSxConfig) Dump(cfgFile string) {
+func (dnsx DnsxConfig) Dump(cfgFile string) {
 	f, err := os.OpenFile(cfgFile, os.O_CREATE|os.O_TRUNC|os.O_RDWR, 0700)
 	if err != nil {
 		panic(err)
@@ -69,10 +69,10 @@ func (dnsx DNSxConfig) Dump(cfgFile string) {
 
 // New 新建 配置文件
 // 这里应该使用 template 完成
-func (dnsx DNSxConfig) New(cfgFile string) {}
+func (dnsx DnsxConfig) New(cfgFile string) {}
 
 // Marshal 格式化配置文件
-func (dnsx DNSxConfig) Marshal() (s string) {
+func (dnsx DnsxConfig) Marshal() (s string) {
 
 	b, err := json.MarshalIndent(dnsx, "", "  ")
 	if err != nil {
@@ -83,10 +83,10 @@ func (dnsx DNSxConfig) Marshal() (s string) {
 }
 
 // Add 增加 Profile
-func (dnsx DNSxConfig) Add(profile string, item DNSxConfigItem) {}
+func (dnsx DnsxConfig) Add(profile string, item DnsxConfigItem) {}
 
 // Delete 删除 Profile
-func (dnsx *DNSxConfig) Delete(profile string) {
+func (dnsx *DnsxConfig) Delete(profile string) {
 	delete(dnsx.Items, profile)
 
 }

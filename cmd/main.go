@@ -45,8 +45,8 @@ func Execute() {
 	}
 }
 
-// Client for dnsx
-type Client interface {
+// DnsxClient for dnsx
+type DnsxClient interface {
 	AddRecord(domain, record, rrType, Value string) (recordID string)
 	GetRecords(domain, record string) (RRs []backend.RecordItem)
 	DeleteRecord(domain, recordID string) string
@@ -54,10 +54,10 @@ type Client interface {
 }
 
 // GetClient 根据 Provider 返回相应 DNS 客户端
-func GetClient() (iClient Client) {
+func GetClient() (iClient DnsxClient) {
 	// var iClient Client
 	dnsx := global.Load()
-	var item global.DNSxConfigItem
+	var item global.DnsxConfigItem
 
 	if global.Profile == "default" {
 		item = dnsx.Items[dnsx.Current]

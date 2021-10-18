@@ -69,7 +69,7 @@ func init() {
 // AddProfile 增加
 func AddProfile() {
 	dnsx := global.Load()
-	var item global.DNSxConfigItem
+	var item global.DnsxConfigItem
 
 	var qsProvider = []*survey.Question{
 		{
