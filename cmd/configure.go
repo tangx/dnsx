@@ -8,6 +8,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/tangx/dnsx/global"
+	"github.com/tangx/dnsx/pkg/dnsxctx"
 )
 
 // configureCmd represents the configure command
@@ -71,8 +72,7 @@ func init() {
 
 // AddProfile 增加
 func AddProfile() {
-	config := global.Load()
-	var item global.DnsxConfigItem
+	var item dnsxctx.DnsxConfigItem
 
 	var qsProvider = []*survey.Question{
 		{
