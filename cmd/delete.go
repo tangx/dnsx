@@ -46,10 +46,8 @@ func DeleteRecord(args []string) {
 		pattern = args[1]
 	}
 
-	IClient := GetClient()
-
 	// 获取所有符合 record 查询条件的 Record 解析记录
-	Records := IClient.GetRecords(domain, pattern)
+	Records := dnsx.GetRecords(domain, pattern)
 	if len(Records) == 0 {
 		logrus.Infoln("没有找到匹配的域名解析记录")
 		return
@@ -101,7 +99,7 @@ func DeleteRecord(args []string) {
 	for _, answer := range QsRecordAnswers {
 		id := strings.Trim(strings.Split(answer, ":")[0], "")
 
-		result := IClient.DeleteRecord(domain, id)
+		result := dnsx.DeleteRecord(domain, id)
 		logrus.Infof("成功删除 %s", RecordsDict[result])
 	}
 

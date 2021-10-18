@@ -53,8 +53,8 @@ type DnsxClient interface {
 	SetRecordStatus(domain string, recordID string, status bool) string
 }
 
-// GetClient 根据 Provider 返回相应 DNS 客户端
-func GetClient() (iClient DnsxClient) {
+// getClient 根据 Provider 返回相应 DNS 客户端
+func getClient() (iClient DnsxClient) {
 	// var iClient Client
 	dnsx := global.Load()
 	var item global.DnsxConfigItem
@@ -76,4 +76,10 @@ func GetClient() (iClient DnsxClient) {
 	}
 
 	return
+}
+
+var dnsx DnsxClient
+
+func init() {
+	dnsx = getClient()
 }

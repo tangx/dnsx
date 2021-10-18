@@ -25,7 +25,6 @@ var searchCmd = &cobra.Command{
 
 // GetRecords 查询记录信息
 func GetRecords(args []string) {
-	IClient := GetClient()
 
 	var record string
 
@@ -36,7 +35,7 @@ func GetRecords(args []string) {
 		record = args[1]
 	}
 
-	RRs := IClient.GetRecords(domain, record)
+	RRs := dnsx.GetRecords(domain, record)
 
 	// dumpByPrintf(RRs)
 	tableWriter(RRs)
