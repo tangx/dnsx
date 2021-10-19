@@ -7,7 +7,7 @@ import (
 	"github.com/olekukonko/tablewriter"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/tangx/dnsx/backend"
+	"github.com/tangx/dnsx/pkg/backend"
 )
 
 // searchCmd represents the get command

@@ -8,7 +8,7 @@ import (
 
 	cns "github.com/go-http/qcloud-cns"
 	"github.com/sirupsen/logrus"
-	"github.com/tangx/dnsx/backend"
+	"github.com/tangx/dnsx/pkg/backend"
 )
 
 // Client 腾讯云 DNS

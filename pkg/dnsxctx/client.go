@@ -2,9 +2,9 @@ package dnsxctx
 
 import (
 	"github.com/sirupsen/logrus"
-	"github.com/tangx/dnsx/backend"
-	"github.com/tangx/dnsx/backend/aliyun"
-	"github.com/tangx/dnsx/backend/qcloud"
+	"github.com/tangx/dnsx/pkg/backend"
+	"github.com/tangx/dnsx/pkg/backend/aliyun"
+	"github.com/tangx/dnsx/pkg/backend/qcloud"
 )
 
 // DnsxClient for dnsx
