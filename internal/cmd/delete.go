@@ -93,6 +93,7 @@ func DeleteRecord(args []string) {
 	_ = survey.AskOne(QsMakeSure, &Confirm)
 	if !Confirm {
 		logrus.Infof("用户取消操作\n")
+		return
 	}
 
 	// 执行删除
