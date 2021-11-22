@@ -5,6 +5,14 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+# [1.1.1](https://github.com/tangx/dnsx/compare/v1.1.0...v1.1.1)
+
+### Bug Fixes
+
+* **fix** 添加解析发现已存在的同名解析,增加判断逻辑 ([07378d6](https://github.com/tangx/dnsx/commit/07378d6e9879d48510fed0f137c18e5556704046))
+
+
+
 # [1.1.0](https://github.com/tangx/dnsx/compare/v1.0.5...v1.1.0)
 
 ### Bug Fixes
