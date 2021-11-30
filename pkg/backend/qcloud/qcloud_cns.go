@@ -58,6 +58,8 @@ func (cli *Client) GetRecords(domain, record string) (RRs []backend.RecordItem) 
 		logrus.Fatalln(err)
 	}
 
+	// 解决通配符的问题
+	record = strings.ReplaceAll(record, "*", `\\*`)
 	pattern := fmt.Sprintf(".*%s.*", record)
 	re := regexp.MustCompile(pattern)
 
