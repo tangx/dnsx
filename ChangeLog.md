@@ -5,6 +5,15 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
+# [1.1.2](https://github.com/tangx/dnsx/compare/v1.1.1...v1.1.2)
+
+### Bug Fixes
+
+* **fix** qcloud 搜索使用 使用字面值代替通配符 ([79f57a9](https://github.com/tangx/dnsx/commit/79f57a938dc359c617677a274b6c08fa09069c6b))
+* **fix** 解决 qcloud 通配符查询问题 ([274581e](https://github.com/tangx/dnsx/commit/274581eafe789b413aa7dcbc680cdc6c4f9606b4))
+
+
+
 # [1.1.1](https://github.com/tangx/dnsx/compare/v1.1.0...v1.1.1)
 
 ### Bug Fixes
