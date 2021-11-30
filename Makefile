@@ -16,8 +16,8 @@ upgrade:
 buildx:
 	$(MAKE) build.dnsx GOOS=linux GOARCH=amd64
 	$(MAKE) build.dnsx GOOS=linux GOARCH=arm64
-	$(MAKE) build.dnsx GOOS=dawrin GOARCH=amd64
-	$(MAKE) build.dnsx GOOS=dawwin GOARCH=arm64
+	$(MAKE) build.dnsx GOOS=darwin GOARCH=amd64
+	$(MAKE) build.dnsx GOOS=darwin GOARCH=arm64
 
 build.dnsx:
 	@echo "Building dnsx for $(GOOS)/$(GOARCH)"
