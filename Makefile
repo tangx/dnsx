@@ -16,13 +16,15 @@ upgrade:
 buildx:
 	$(MAKE) build.dnsx GOOS=linux GOARCH=amd64
 	$(MAKE) build.dnsx GOOS=linux GOARCH=arm64
+	$(MAKE) build.dnsx GOOS=dawrin GOARCH=amd64
+	$(MAKE) build.dnsx GOOS=dawwin GOARCH=arm64
 
 build.dnsx:
 	@echo "Building dnsx for $(GOOS)/$(GOARCH)"
 	$(GOBUILD) -o ./out/dnsx-$(GOOS)-$(GOARCH) 
 
 install: build.dnsx
-	mv ./out/dnsx-$(GOOS)-$(GOARCH) ${GOPATH}/bin/dnsx
+	mv ./out/dnsx-$(GOOS)-$(GOARCH) /usr/local/bin/dnsx
 
 release:
 	git push

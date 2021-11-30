@@ -1,8 +1,6 @@
 package qcloud
 
 import (
-	"fmt"
-	"regexp"
 	"strconv"
 	"strings"
 
@@ -58,13 +56,8 @@ func (cli *Client) GetRecords(domain, record string) (RRs []backend.RecordItem) 
 		logrus.Fatalln(err)
 	}
 
-	// 解决通配符的问题
-	record = strings.ReplaceAll(record, "*", `\\*`)
-	pattern := fmt.Sprintf(".*%s.*", record)
-	re := regexp.MustCompile(pattern)
-
 	for _, rr := range records {
-		if re.Match([]byte(rr.Name)) {
+		if strings.Contains(rr.Name, record) {
 			// 偷懒初始化值的警告
 			// https://www.maodapeng.com/topic/10030.html
 			// composite literal uses unkeyed fields
